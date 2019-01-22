@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @SpringBootApplication
-public class AccountStockServiceApplication {
+public class ProfileStockServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccountStockServiceApplication.class, args);
+		SpringApplication.run(ProfileStockServiceApplication.class, args);
 	}
 
 }
