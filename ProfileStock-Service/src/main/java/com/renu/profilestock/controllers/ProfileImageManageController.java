@@ -21,7 +21,7 @@ public class ProfileImageManageController {
 			@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage) throws Exception {
 		LOGGER.info("FROM class ProfileImageManageController,method : addProfileImage()--ENTER--");
 
-		ProfileImageCompressionController.profileImageCompression(selectedProfileImage,
+		ProfileImageCompressionAndUploadController.profileImageCompression(selectedProfileImage,
 				UUID.randomUUID().toString().substring(26).toUpperCase());
 
 		return ResponseEntity.ok().body(null);
