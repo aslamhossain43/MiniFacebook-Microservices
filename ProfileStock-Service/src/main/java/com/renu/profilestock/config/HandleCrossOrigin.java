@@ -1,4 +1,4 @@
-package com.renu.profilestock.cross_origin;
+package com.renu.profilestock.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

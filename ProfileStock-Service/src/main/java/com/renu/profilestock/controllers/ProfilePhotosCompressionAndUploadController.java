@@ -21,8 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
-public class ProfileImageCompressionAndUploadController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileImageCompressionAndUploadController.class);
+public class ProfilePhotosCompressionAndUploadController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProfilePhotosCompressionAndUploadController.class);
 
 	private static final String COMPRESSED_PROOFILE_IMAGE_URL = "H:\\MiniFacebook-All-Images-Compressed\\";
 	private static final Path PRE_COMPRESSION_ABS_PATH = Paths
