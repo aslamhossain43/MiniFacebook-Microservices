@@ -35,13 +35,13 @@ public class ProfilePhotosCompressionAndUploadController {
 		profileImageCode = pImageode;
 		FileImageOutputStream output;
 		BufferedImage realProfileImageToCompresse = null;
-		Files.copy(profileImage.getInputStream(), PRE_COMPRESSION_ABS_PATH.resolve(profileImageCode + ".jpg"));
-		File forCompressionProfileImage = new File(PRE_COMPRESSION_ABS_PATH + profileImageCode + ".jpg");
+		Files.copy(profileImage.getInputStream(), PRE_COMPRESSION_ABS_PATH.resolve(profileImageCode + ".jpeg"));
+		File forCompressionProfileImage = new File(PRE_COMPRESSION_ABS_PATH + profileImageCode + ".jpeg");
 
 		// MUST USE STRING URL NOT A VARIABLE
 		String prefix = "H:\\MiniFacebook-All-Images-Pre-Compression-Dont-Delete-this\\";
 		String[] ids = { profileImageCode };
-		String ext = ".jpg";
+		String ext = ".jpeg";
 		Image[] images = new Image[ids.length];
 		for (int i = 0; i < images.length; i++) {
 			String path = prefix + ids[i] + ext;
@@ -51,7 +51,7 @@ public class ProfilePhotosCompressionAndUploadController {
 		// CONVERT INTO STREAM
 		OutputStream os = new FileOutputStream(forCompressionProfileImage);
 		// NEED A WRITER TO CONVERT A SPECIFIC FORMAT
-		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpg");
+		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("jpeg");
 		ImageWriter writer = (ImageWriter) writers.next();
 
 		// CREATE IMAGE OUTPUT STREAM
@@ -61,8 +61,8 @@ public class ProfilePhotosCompressionAndUploadController {
 		ImageWriteParam param = writer.getDefaultWriteParam();
 
 		param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-		param.setCompressionQuality(0.9f); // compress the quality value you prefer
-		File file = new File(COMPRESSED_PROOFILE_IMAGE_URL + profileImageCode + ".jpg");
+		param.setCompressionQuality(0.5f); // compress the quality value you prefer
+		File file = new File(COMPRESSED_PROOFILE_IMAGE_URL + profileImageCode + ".jpeg");
 		output = new FileImageOutputStream(file);
 		writer.setOutput(output);
 		writer.write(null, new IIOImage(realProfileImageToCompresse, null, null), param);
@@ -72,10 +72,10 @@ public class ProfilePhotosCompressionAndUploadController {
 		writer.dispose();
 		// MUST USE STRING URL NOT A VARIABLE
 		File afterCompressedImageFile = new File(
-				"H:\\MiniFacebook-All-Images-Pre-Compression-Dont-Delete-this\\" + profileImageCode + ".jpg");
+				"H:\\MiniFacebook-All-Images-Pre-Compression-Dont-Delete-this\\" + profileImageCode + ".jpeg");
 		afterCompressedImageFile.delete();
 		LOGGER.info("FROM class ProfileImageCompressionController,method: profileImageCompression()--DELETED--"
-				+ profileImageCode + ".jpg");
+				+ profileImageCode + ".jpeg");
 		profileImageCode = null;
 	}
 
