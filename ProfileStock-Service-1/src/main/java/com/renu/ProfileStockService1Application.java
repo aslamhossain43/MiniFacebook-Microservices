@@ -3,19 +3,15 @@ package com.renu;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+@EnableHystrix
 @EnableDiscoveryClient
-@EnableZuulProxy
 @SpringBootApplication
-public class ZuulFirstApplication {
+public class ProfileStockService1Application {
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(ZuulFirstApplication.class, args);
-		
+	public static void main(String[] args) {
+		SpringApplication.run(ProfileStockService1Application.class, args);
 	}
-	
-	
-	
-}
 
+}
 

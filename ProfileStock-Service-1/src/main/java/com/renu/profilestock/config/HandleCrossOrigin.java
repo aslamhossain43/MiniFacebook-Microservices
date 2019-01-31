@@ -1,4 +1,4 @@
-package com.renu.zuul.cross_origin;
+package com.renu.profilestock.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +11,7 @@ public class HandleCrossOrigin {
 	public CorsFilter corsFilter() {
 	    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    final CorsConfiguration config = new CorsConfiguration();
-	    
-	    config.setAllowCredentials(true); 
+	    config.setAllowCredentials(true);
 	    config.addAllowedOrigin("*");
 	    config.addAllowedHeader("*");
 	    config.addAllowedMethod("OPTIONS");
@@ -25,4 +24,9 @@ public class HandleCrossOrigin {
 	    source.registerCorsConfiguration("/**", config);
 	    return new CorsFilter(source);
 	}
+	
+	
+
+	
+	
 }
