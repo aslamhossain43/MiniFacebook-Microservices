@@ -24,10 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.renu.profilestock.config.RibbonConfiguration;
 import com.renu.profilestock.models.ProfilePhotosEntity;
+import com.renu.profilestock.repositories.ProfilePhotosEntityRepository;
 
 @RestController
 @RequestMapping(value = "/image")
-@RibbonClient(name = "profileStock-stock", configuration = RibbonConfiguration.class)
+@RibbonClient(name = "profileStock-service1", configuration = RibbonConfiguration.class)
 public class ProfilePhotosManageController {
   
 	// LOGGER
@@ -35,6 +36,9 @@ public class ProfilePhotosManageController {
 	//NOT STATIC OTHERWISE NOT WORKS
 	@Autowired
 	RestTemplate restTemplate;
+	//BACKUP DATA
+	@Autowired
+	ProfilePhotosEntityRepository profilePhotosEntityRepository;
 	// PHOTO CODE
 	private static String photoCode;
 	// PHOTO ADD URL
@@ -44,7 +48,7 @@ public class ProfilePhotosManageController {
 	
 	// CIRCUIT BREAKER
 	// ADD PROFILE IMAGE METHOD
-	@HystrixCommand(fallbackMethod = "fallback")
+		@HystrixCommand(fallbackMethod = "fallbackForaddProfileImage")
 	@PostMapping(value = "/addImage")
 	public  ResponseEntity<String> addProfileImage(
 			@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage, @RequestParam("uid") String uid)
@@ -70,9 +74,10 @@ public class ProfilePhotosManageController {
 			
 			ProfilePhotosEntity response = restTemplate.postForObject(PHOTO_ADD_URL, profilePhotosEntity,
 					ProfilePhotosEntity.class);
-			LOGGER.info("FROM class ProfileImageManageController,method : addProfileImage()--Getting Response : "
-					+ response);
-
+			//IF REMOTE SERVER DAMAGES
+			if (response==null) {
+				profilePhotosEntityRepository.save(profilePhotosEntity);
+			}
 			photoCode = null;
 			return ResponseEntity.ok().body("Photo add success !!");
 		} else {
@@ -80,10 +85,39 @@ public class ProfilePhotosManageController {
 		}
 	}
 
-	public ResponseEntity<String> fallback(@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage,
-			@RequestParam("uid") String uid,Throwable hystrixCommand) {
-		return ResponseEntity.ok().body("success");
-	}
+		//HYSTRIX fallbackForaddProfileImage
+		public ResponseEntity<String> fallbackForaddProfileImage(@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage,
+				@RequestParam("uid") String uid,Throwable hystrixCommand) throws Exception {
+			LOGGER.info("FROM class ProfileImageManageController,method : addProfileImage()--ENTER--");
+			LOGGER.info("FROM class ProfileImageManageController,method : addProfileImage()--UID: " + uid);
+
+			if (selectedProfileImage.getContentType().equals("image/jpeg")
+					|| selectedProfileImage.getContentType().equals("image/jpg")
+					|| selectedProfileImage.getContentType().equals("image/png")
+					|| selectedProfileImage.getContentType().equals("image/gif")) {
+
+				photoCode = "PP" + UUID.randomUUID().toString().substring(26).toUpperCase();
+
+				ProfilePhotosCompressionAndUploadController.profileImageCompression(selectedProfileImage, photoCode);
+				ProfilePhotosEntity profilePhotosEntity = new ProfilePhotosEntity();
+				profilePhotosEntity.setUid(uid);
+				profilePhotosEntity.setPhotoCode(photoCode);
+
+				LOGGER.info(
+						"FROM class ProfileImageManageController,method : addProfileImage()--PHOTO CODE : " + photoCode);
+				
+				
+				profilePhotosEntityRepository.save(profilePhotosEntity);
+				
+				
+				
+				photoCode = null;
+				return ResponseEntity.ok().body("Photo add success !!");
+			} else {
+				return ResponseEntity.badRequest().body(null);
+			}
+		}
+		
 	
 	
 	

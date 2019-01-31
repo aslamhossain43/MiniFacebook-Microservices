@@ -1,22 +1,22 @@
 package com.renu.profilestock.models;
 
-
-public class ProfilePhotosEntity {
-
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+@Entity
+public class ProfilePhotosEntity extends BaseProfilePhotosEntity<Long> {
+@Id
+@GeneratedValue(strategy=GenerationType.AUTO)
 private Long id;
 private String uid;
 private String photoCode;
-private String createdDate;
-private String lastModifiedDate;
 
 public ProfilePhotosEntity() {}
 
+@Override
 public Long getId() {
 	return id;
-}
-
-public void setId(Long id) {
-	this.id = id;
 }
 
 public String getUid() {
@@ -35,21 +35,11 @@ public void setPhotoCode(String photoCode) {
 	this.photoCode = photoCode;
 }
 
-public String getCreatedDate() {
-	return createdDate;
+public void setId(Long id) {
+	this.id = id;
 }
 
-public void setCreatedDate(String createdDate) {
-	this.createdDate = createdDate;
-}
 
-public String getLastModifiedDate() {
-	return lastModifiedDate;
-}
-
-public void setLastModifiedDate(String lastModifiedDate) {
-	this.lastModifiedDate = lastModifiedDate;
-}
 
 
 }

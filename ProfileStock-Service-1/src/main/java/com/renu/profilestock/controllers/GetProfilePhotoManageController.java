@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.renu.profilestock.models.ProfilePhotosEntity;
+import com.renu.profilestock.repositories.ProfilePhotosEntityRepository;
 
 @RestController
 @RequestMapping(value="/photo")
-//@RibbonClient(name = "profileStock-stock", configuration = RibbonConfiguration.class)
 public class GetProfilePhotoManageController {
 private static final Logger LOGGER=LoggerFactory.getLogger(GetProfilePhotoManageController.class);
 //PHOTO GET URL
@@ -27,10 +28,13 @@ private static final Logger LOGGER=LoggerFactory.getLogger(GetProfilePhotoManage
 
 @Autowired
 RestTemplate restTemplate;
+//BACKUP DATA
+		@Autowired
+		ProfilePhotosEntityRepository profilePhotosEntityRepository;
 
 
-
-
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackForStorUID")
 //GET UID FOR HANDLING OTHER PROCESS
 @GetMapping(value="/uid/{uid}")
 public ResponseEntity<List<ProfilePhotosEntity>> storeUID(@PathVariable("uid") String uid) {
@@ -43,15 +47,17 @@ public ResponseEntity<List<ProfilePhotosEntity>> storeUID(@PathVariable("uid") S
 	            HttpMethod.GET, null, new ParameterizedTypeReference<List<ProfilePhotosEntity>>() {
 	            });
 	
-	LOGGER.info("FROM class GetProfilePhotoManageController,method : storeUID()---VALUES : "+profilePhotosEntities);
-	
-	
-	
 	
 	
 	return profilePhotosEntities;
 
 
+}
+//HYSTRIX FOR fallbackForStorUID
+public ResponseEntity<List<ProfilePhotosEntity>> fallbackForStorUID(@PathVariable("uid") String uid,Throwable hystrixCommand) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackForStorUID---UID : "+uid);
+	List<ProfilePhotosEntity> profilePhotosEntity=profilePhotosEntityRepository.getAllProfilePhotosByUid(uid);
+	return ResponseEntity.ok().body(profilePhotosEntity);
 }
 
 
