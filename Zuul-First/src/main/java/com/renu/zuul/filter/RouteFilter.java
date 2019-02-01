@@ -14,16 +14,30 @@ public class RouteFilter extends ZuulFilter {
 
 	@Override
 	public boolean shouldFilter() {
-		// TODO Auto-generated method stub
+		/*RequestContext requestContext=RequestContext.getCurrentContext();
+		HttpServletRequest httpServletRequest=requestContext.getRequest();
+		String requestURL=httpServletRequest.getRequestURL().toString();
+		return requestURL.contains("/getprofilephotoinformation/*")||requestURL.contains("/profileimageadd")||
+				requestURL.contains("/getprofilephoto");*/
 		return true;
 	}
 
 	@Override
 	public Object run() throws ZuulException {
-		RequestContext requestContext=RequestContext.getCurrentContext();
+		/*RequestContext requestContext=RequestContext.getCurrentContext();
 		HttpServletRequest httpServletRequest=requestContext.getRequest();
-		LOGGER.info("Request Method : " + httpServletRequest.getMethod() + " Request URL : " + httpServletRequest.getRequestURL().toString());
-	   
+		String requestURL=httpServletRequest.getRequestURL().toString();
+		   if (!requestURL.contains("http://192.168.1.105:8082/photo/uid/")) {
+			requestContext.put(requestURL, "http://192.168.1.105:8083/photo/uid/");
+		}
+		   if (!requestURL.contains("http://192.168.1.105:8082/image/addImage")) {
+				requestContext.put(requestURL, "http://192.168.1.105:8083/image/addImage");
+			}
+		   if (!requestURL.contains("http://192.168.1.105:8082/image/getProfilePhoto")) {
+				requestContext.put(requestURL, "http://192.168.1.105:8083/image/getProfilePhoto");
+			}*/
+		
+		
 		return null;
 	}
 

@@ -28,7 +28,7 @@ import com.renu.profilestock.repositories.ProfilePhotosEntityRepository;
 
 @RestController
 @RequestMapping(value = "/image")
-@RibbonClient(name = "profileStock-service1", configuration = RibbonConfiguration.class)
+@RibbonClient(name = "profileStock-service", configuration = RibbonConfiguration.class)
 public class ProfilePhotosManageController {
   
 	// LOGGER
