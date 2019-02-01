@@ -43,8 +43,7 @@ public class ProfilePhotosManageController {
 	private static String photoCode;
 	// PHOTO ADD URL
 	private static final String PHOTO_ADD_URL="http://profile-service/photos/add";
-    //GET PROFILE PHOTO URL
-	private static final Path PROOFILE_PHOTO_URL = Paths.get("H:\\MiniFacebook-All-Images-Compressed\\");
+    
 	
 	// CIRCUIT BREAKER
 	// ADD PROFILE IMAGE METHOD
@@ -120,27 +119,6 @@ public class ProfilePhotosManageController {
 		
 	
 	
-	
-	public Resource loadProfilePhoto() {
-		try {
-			Path file = PROOFILE_PHOTO_URL.resolve("photoName.png");
-			Resource resource = new UrlResource(file.toUri());
-			if (resource.exists() || resource.isReadable()) {
-				return resource;
-			} else {
-				throw new RuntimeException("FAIL!");
-			}
-		} catch (MalformedURLException e) {
-			throw new RuntimeException("FAIL!");
-		}
-	}
-	
-	
-	@GetMapping("/getProfilePhoto")
-	public ResponseEntity<Resource> getFile() {
-		Resource file = loadProfilePhoto();
-		return ResponseEntity.ok().body(file);
-	}
 	
 	
 

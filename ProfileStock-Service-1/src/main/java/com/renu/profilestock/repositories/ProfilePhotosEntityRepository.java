@@ -15,5 +15,9 @@ ProfilePhotosEntity getById(Long id);
 static final String ALL_PROFILE_PHOTOS_BY_UID="FROM ProfilePhotosEntity where uid=:uid";
 @Query(ALL_PROFILE_PHOTOS_BY_UID)
 List<ProfilePhotosEntity>getAllProfilePhotosByUid(@Param("uid") String uid);
+//GET SINGLE PROFILE PHOTO USING UID
+static final String SINGLE_PROFILE_PHOTO_BY_UID="FROM ProfilePhotosEntity where uid=:uid";
+@Query(SINGLE_PROFILE_PHOTO_BY_UID)
+ProfilePhotosEntity getSingleProfilePhotoByUid(@Param("uid") String uid);
 
 }

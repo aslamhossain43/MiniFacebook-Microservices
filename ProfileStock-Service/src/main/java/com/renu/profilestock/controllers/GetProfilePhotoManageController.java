@@ -1,11 +1,16 @@
 package com.renu.profilestock.controllers;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +31,8 @@ public class GetProfilePhotoManageController {
 private static final Logger LOGGER=LoggerFactory.getLogger(GetProfilePhotoManageController.class);
 //PHOTO GET URL
 	private static final String PHOTO_GET_URL="http://profile-service/photo/uid/";
+	//GET PROFILE PHOTO URL
+			private static final Path PROOFILE_PHOTO_URL = Paths.get("H:\\MiniFacebook-All-Images-Compressed\\");
 
 
 @Autowired
@@ -63,6 +70,67 @@ public ResponseEntity<List<ProfilePhotosEntity>> fallbackForStorUID(@PathVariabl
 	List<ProfilePhotosEntity> profilePhotosEntity=profilePhotosEntityRepository.getAllProfilePhotosByUid(uid);
 	return ResponseEntity.ok().body(profilePhotosEntity);
 }
+
+
+
+
+
+//GET ALL PROFILE PHOTOS
+public Resource loadProfileAllPhotos(String photoCode) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : loadProfileAllPhotos()---photoCode : "+photoCode);
+	
+	try {
+		Path file = PROOFILE_PHOTO_URL.resolve(photoCode+".jpeg");
+		Resource resource = new UrlResource(file.toUri());
+		if (resource.exists() || resource.isReadable()) {
+			return resource;
+		} else {
+			throw new RuntimeException("FAIL!");
+		}
+	} catch (MalformedURLException e) {
+		throw new RuntimeException("FAIL!");
+	}
+}
+
+
+@GetMapping("/getProfilePhoto/{photoCode}")
+public ResponseEntity<Resource> getAllPhotos(@PathVariable("photoCode")String photoCode) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : getAllPhotos()---photoCode : "+photoCode);
+	
+	Resource file = loadProfileAllPhotos(photoCode);
+	return ResponseEntity.ok().body(file);
+}
+
+
+//GET  PROFILE SINGLE PHOTO
+public Resource loadProfileSinglePhoto(String photoCode) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : loadProfileSinglePhoto()---photoCode : "+photoCode);
+	try {
+		Path file = PROOFILE_PHOTO_URL.resolve(photoCode+".jpeg");
+		Resource resource = new UrlResource(file.toUri());
+		if (resource.exists() || resource.isReadable()) {
+			return resource;
+		} else {
+			throw new RuntimeException("FAIL!");
+		}
+	} catch (MalformedURLException e) {
+		throw new RuntimeException("FAIL!");
+	}
+}
+
+
+@GetMapping("/getProfilePhoto/single/{uid}")
+public ResponseEntity<Resource> getSingleProfilePhoto(@PathVariable("uid")String uid) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : getSingleProfilePhoto()---UID : "+uid);
+	//GET LATEST SINGLE VALUES
+		ProfilePhotosEntity profilePhotosEntity=profilePhotosEntityRepository.getSingleProfilePhotoByUid(uid);
+		String singlePhotoCode=profilePhotosEntity.getPhotoCode();
+		
+	Resource file = loadProfileSinglePhoto(singlePhotoCode);
+	return ResponseEntity.ok().body(file);
+}
+
+
 
 
 

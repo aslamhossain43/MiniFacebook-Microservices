@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -27,13 +28,15 @@ public class ProfileStockServiceController {
 private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceController.class);
 //PHOTO GET URL
 	private static final String PHOTO_GET_URL="http://profileStock-service/photo/uid/";
+	//PHOTO GET BY PHOTO CODE
+		private static final String PHOTO_GET_BY_CODE="http://profileStock-service/photo/getProfilePhoto/";
 	// PHOTO ADD URL
 		private static final String PHOTO_ADD_URL="http://profileStock-service/image/addImage";
 	//FOR RIBBON
 	@Autowired
 	RestTemplate restTemplate;
 	
-	
+	// SEND UID
 	@RequestMapping(value="/getprofilephotoinformation/{uid}")
 	public ResponseEntity<?>getprofilephotoinformation(@PathVariable("uid") String uid) {
 		LOGGER.info("FROM class ProfileStockServiceController,method : getprofilephotoinformation()--ENTER--UID : "+uid);
@@ -52,7 +55,7 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 	
 	
 	
-	
+	//SEND PHOTO
 	@RequestMapping(value="/profileimageadd")
 	public ResponseEntity<?>profileimageadd(@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage, @RequestParam("uid") String uid) throws Exception {
 		LOGGER.info("FROM class ProfileStockServiceController,method : profileimageadd()--ENTER--UID : "+uid);
@@ -64,8 +67,37 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 		return ResponseEntity.ok().body(response);
 	}
 	
+	// SEND PHOTO CODE for ALL PHOTOS
+	@RequestMapping(value="/photoCode/{photoCode}")
+	public ResponseEntity<?>getProfileAllPhotos(@PathVariable("photoCode") String photoCode) {
+		LOGGER.info("FROM class ProfileStockServiceController,method : getProfileAllPhotos()--ENTER--photoCode : "+photoCode);
+
+		ResponseEntity<?> profilePhoto =
+		        restTemplate.getForEntity(PHOTO_GET_BY_CODE+photoCode,Resource.class);
+		
+		
+		
+		return profilePhoto;
+		
+		
+	}
 	
 	
+	
+	// SEND PHOTO CODE for ALL PHOTOS
+		@RequestMapping(value="/photoCode/single/{uid}")
+		public ResponseEntity<?>getProfileSinglePhoto(@PathVariable("uid") String uid) {
+			LOGGER.info("FROM class ProfileStockServiceController,method : getProfileSinglePhoto()--ENTER--UID : "+uid);
+
+			ResponseEntity<?> profilePhoto =
+			        restTemplate.getForEntity(PHOTO_GET_BY_CODE+uid,Resource.class);
+			
+			
+			
+			return profilePhoto;
+			
+			
+		}
 	
 	
 }
