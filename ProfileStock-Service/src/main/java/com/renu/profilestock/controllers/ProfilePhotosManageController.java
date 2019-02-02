@@ -1,18 +1,12 @@
 package com.renu.profilestock.controllers;
 
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,108 +33,97 @@ public class ProfilePhotosManageController {
 		@Autowired
 		ProfilePhotosEntityRepository profilePhotosEntityRepository;
 	// PHOTO CODE
-	private static String photoCode;
+	private String photoCode;
 	// PHOTO ADD URL
 	private static final String PHOTO_ADD_URL="http://profile-service/photos/add";
-    //GET PROFILE PHOTO URL
-	private static final Path PROOFILE_PHOTO_URL = Paths.get("H:\\MiniFacebook-All-Images-Compressed\\");
-	
+   //STORE RESPONSE
+	ProfilePhotosEntity response =null;
 	// CIRCUIT BREAKER
 	// ADD PROFILE IMAGE METHOD
 	@HystrixCommand(fallbackMethod = "fallbackForaddProfileImage")
 	@PostMapping(value = "/addImage")
-	public  ResponseEntity<String> addProfileImage(
+	public  ResponseEntity<ProfilePhotosEntity> addProfileImage(
 			@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage, @RequestParam("uid") String uid)
 			throws Exception {
 
 		LOGGER.info("FROM class ProfileImageManageController,method : addProfileImage()--ENTER--");
 		LOGGER.info("FROM class ProfileImageManageController,method : addProfileImage()--UID: " + uid);
 
+		
+		
 		if (selectedProfileImage.getContentType().equals("image/jpeg")
 				|| selectedProfileImage.getContentType().equals("image/jpg")
 				|| selectedProfileImage.getContentType().equals("image/png")
 				|| selectedProfileImage.getContentType().equals("image/gif")) {
+			
+			this.photoCode = "PP" + UUID.randomUUID().toString().substring(26).toUpperCase();
 
-			photoCode = "PP" + UUID.randomUUID().toString().substring(26).toUpperCase();
-
-			ProfilePhotosCompressionAndUploadController.profileImageCompression(selectedProfileImage, photoCode);
+			
+			LOGGER.info(
+					"FROM class ProfileImageManageController,method : addProfileImage()--PHOTO VALID AND CODE : " + photoCode);
 			ProfilePhotosEntity profilePhotosEntity = new ProfilePhotosEntity();
 			profilePhotosEntity.setUid(uid);
-			profilePhotosEntity.setPhotoCode(photoCode);
-
-			LOGGER.info(
-					"FROM class ProfileImageManageController,method : addProfileImage()--PHOTO CODE : " + photoCode);
+			profilePhotosEntity.setPhotoCode(this.photoCode);
 			
-			ProfilePhotosEntity response = restTemplate.postForObject(PHOTO_ADD_URL, profilePhotosEntity,
+			this.response = restTemplate.postForObject(PHOTO_ADD_URL, profilePhotosEntity,
 					ProfilePhotosEntity.class);
-			//IF REMOTE SERVER DAMAGES
-			if (response==null) {
-				profilePhotosEntityRepository.save(profilePhotosEntity);
-			}
+			if (this.response!=null) {
+				
+			ProfilePhotosCompressionAndUploadController.profileImageCompression(selectedProfileImage, this.photoCode);
 
-			photoCode = null;
-			return ResponseEntity.ok().body("Photo add success !!");
+			this.photoCode = null;
+			}
+	           		
+				
+			
+			return ResponseEntity.ok().body(response);
 		} else {
-			return ResponseEntity.badRequest().body(null);
+			return ResponseEntity.ok().body(null);
 		}
+           	
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 //HYSTRIX fallbackForaddProfileImage
-	public ResponseEntity<String> fallbackForaddProfileImage(@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage,
+	public ResponseEntity<ProfilePhotosEntity> fallbackForaddProfileImage(@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage,
 			@RequestParam("uid") String uid,Throwable hystrixCommand) throws Exception {
-		LOGGER.info("FROM class ProfileImageManageController,method : addProfileImage()--ENTER--");
-		LOGGER.info("FROM class ProfileImageManageController,method : addProfileImage()--UID: " + uid);
-
+		LOGGER.info("FROM class ProfileImageManageController,method : fallbackForaddProfileImage()--ENTER--");
+		LOGGER.info("FROM class ProfileImageManageController,method : fallbackForaddProfileImage()--UID: " + uid);
+		ProfilePhotosEntity profilePhotosEntity=null;
 		if (selectedProfileImage.getContentType().equals("image/jpeg")
 				|| selectedProfileImage.getContentType().equals("image/jpg")
 				|| selectedProfileImage.getContentType().equals("image/png")
 				|| selectedProfileImage.getContentType().equals("image/gif")) {
 
-			photoCode = "PP" + UUID.randomUUID().toString().substring(26).toUpperCase();
-
-			ProfilePhotosCompressionAndUploadController.profileImageCompression(selectedProfileImage, photoCode);
-			ProfilePhotosEntity profilePhotosEntity = new ProfilePhotosEntity();
+			profilePhotosEntity= new ProfilePhotosEntity();
 			profilePhotosEntity.setUid(uid);
-			profilePhotosEntity.setPhotoCode(photoCode);
+			profilePhotosEntity.setPhotoCode(this.photoCode);
 
 			LOGGER.info(
-					"FROM class ProfileImageManageController,method : addProfileImage()--PHOTO CODE : " + photoCode);
+					"FROM class ProfileImageManageController,method : fallbackForaddProfileImage()--PHOTO CODE : " + this.photoCode);
 			
 			
 			profilePhotosEntityRepository.save(profilePhotosEntity);
+			ProfilePhotosCompressionAndUploadController.profileImageCompression(selectedProfileImage, this.photoCode);
 			
 			
 			
-			photoCode = null;
-			return ResponseEntity.ok().body("Photo add success !!");
+			this.photoCode = null;
+			return ResponseEntity.ok().body(profilePhotosEntity);
 		} else {
-			return ResponseEntity.badRequest().body(null);
+			return ResponseEntity.ok().body(profilePhotosEntity);
 		}
 	}
 	
 	
-	
-	public Resource loadProfilePhoto() {
-		try {
-			Path file = PROOFILE_PHOTO_URL.resolve("photoName.png");
-			Resource resource = new UrlResource(file.toUri());
-			if (resource.exists() || resource.isReadable()) {
-				return resource;
-			} else {
-				throw new RuntimeException("FAIL!");
-			}
-		} catch (MalformedURLException e) {
-			throw new RuntimeException("FAIL!");
-		}
-	}
-	
-	
-	@GetMapping("/getProfilePhoto")
-	public ResponseEntity<Resource> getFile() {
-		Resource file = loadProfilePhoto();
-		return ResponseEntity.ok().body(file);
-	}
-	
-	
+
 
 }
 

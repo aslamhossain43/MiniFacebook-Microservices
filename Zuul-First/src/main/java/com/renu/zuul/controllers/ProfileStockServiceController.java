@@ -27,10 +27,14 @@ import com.renu.zuul.config.RibbonConfiguration;
 public class ProfileStockServiceController {
 private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceController.class);
 //PHOTO GET URL
-	private static final String PHOTO_GET_URL="http://profileStock-service/photo/uid/";
-	//PHOTO GET BY PHOTO CODE
-		private static final String PHOTO_GET_BY_CODE="http://profileStock-service/photo/getProfilePhoto/";
-	// PHOTO ADD URL
+	private static final String GET_PROFILE_PHOTO_INFORMATION="http://profileStock-service/photo/uid/";
+	//PHOTO GET BY ALL PHOTOS PHOTO CODE
+		private static final String GET_PROFILE_ALL_PHOTOS="http://profileStock-service/photo/getProfilePhoto/";
+	
+		// SINGLE PHOTO GET BU UID
+				private static final String GET_PROFILE_SINGLE_PHOTO="http://profileStock-service/photo/getProfilePhoto/single/";
+			
+		// PHOTO ADD URL
 		private static final String PHOTO_ADD_URL="http://profileStock-service/image/addImage";
 	//FOR RIBBON
 	@Autowired
@@ -42,7 +46,7 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 		LOGGER.info("FROM class ProfileStockServiceController,method : getprofilephotoinformation()--ENTER--UID : "+uid);
 
 		ResponseEntity<List<?>> profilePhotosEntities =
-		        restTemplate.exchange(PHOTO_GET_URL+uid,
+		        restTemplate.exchange(GET_PROFILE_PHOTO_INFORMATION+uid,
 		            HttpMethod.GET, null, new ParameterizedTypeReference<List<?>>() {
 		            });
 		
@@ -73,7 +77,7 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 		LOGGER.info("FROM class ProfileStockServiceController,method : getProfileAllPhotos()--ENTER--photoCode : "+photoCode);
 
 		ResponseEntity<?> profilePhoto =
-		        restTemplate.getForEntity(PHOTO_GET_BY_CODE+photoCode,Resource.class);
+		        restTemplate.getForEntity(GET_PROFILE_ALL_PHOTOS+photoCode,Resource.class);
 		
 		
 		
@@ -84,13 +88,13 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 	
 	
 	
-	// SEND PHOTO CODE for ALL PHOTOS
+	// SEND PHOTO CODE for SINGLE PHOTOS
 		@RequestMapping(value="/photoCode/single/{uid}")
 		public ResponseEntity<?>getProfileSinglePhoto(@PathVariable("uid") String uid) {
 			LOGGER.info("FROM class ProfileStockServiceController,method : getProfileSinglePhoto()--ENTER--UID : "+uid);
 
 			ResponseEntity<?> profilePhoto =
-			        restTemplate.getForEntity(PHOTO_GET_BY_CODE+uid,Resource.class);
+			        restTemplate.getForEntity(GET_PROFILE_SINGLE_PHOTO+uid,Resource.class);
 			
 			
 			

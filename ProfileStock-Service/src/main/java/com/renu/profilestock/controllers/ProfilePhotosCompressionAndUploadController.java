@@ -1,5 +1,6 @@
 package com.renu.profilestock.controllers;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -34,10 +35,11 @@ public class ProfilePhotosCompressionAndUploadController {
 		LOGGER.info("FROM class ProfileImageCompressionController,method: profileImageCompression()--ENTER--");
 		profileImageCode = pImageode;
 		FileImageOutputStream output;
-		BufferedImage realProfileImageToCompresse = null;
+		BufferedImage bufferedrealImage = null;
+		BufferedImage resizedRealImage=null;
 		Files.copy(profileImage.getInputStream(), PRE_COMPRESSION_ABS_PATH.resolve(profileImageCode + ".jpeg"));
 		File forCompressionProfileImage = new File(PRE_COMPRESSION_ABS_PATH + profileImageCode + ".jpeg");
-
+		
 		// MUST USE STRING URL NOT A VARIABLE
 		String prefix = "H:\\MiniFacebook-All-Images-Pre-Compression-Dont-Delete-this\\";
 		String[] ids = { profileImageCode };
@@ -45,9 +47,13 @@ public class ProfilePhotosCompressionAndUploadController {
 		Image[] images = new Image[ids.length];
 		for (int i = 0; i < images.length; i++) {
 			String path = prefix + ids[i] + ext;
-			realProfileImageToCompresse = ImageIO.read(new File(path));
+			bufferedrealImage = ImageIO.read(new File(path));
 		}
-
+         //FOR RESIZE TO 220*220
+		
+		resizedRealImage=scale(bufferedrealImage, 168, 168);
+		
+		
 		// CONVERT INTO STREAM
 		OutputStream os = new FileOutputStream(forCompressionProfileImage);
 		// NEED A WRITER TO CONVERT A SPECIFIC FORMAT
@@ -61,23 +67,46 @@ public class ProfilePhotosCompressionAndUploadController {
 		ImageWriteParam param = writer.getDefaultWriteParam();
 
 		param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-		param.setCompressionQuality(0.5f); // compress the quality value you prefer
+		param.setCompressionQuality(1.0f); // compress the quality value you prefer
 		File file = new File(COMPRESSED_PROOFILE_IMAGE_URL + profileImageCode + ".jpeg");
 		output = new FileImageOutputStream(file);
 		writer.setOutput(output);
-		writer.write(null, new IIOImage(realProfileImageToCompresse, null, null), param);
+		//CPMPRESSION OCCURED FOLLOWING resizedRealImage LIKE:WIDTH,HEIGHT TYPE
+		writer.write(null, new IIOImage(resizedRealImage, null, null), param);
 
 		os.close();
 		ios.close();
 		writer.dispose();
 		// MUST USE STRING URL NOT A VARIABLE
-		File afterCompressedImageFile = new File(
+		File afterCompressionImageForDelete = new File(
 				"H:\\MiniFacebook-All-Images-Pre-Compression-Dont-Delete-this\\" + profileImageCode + ".jpeg");
-		afterCompressedImageFile.delete();
+		afterCompressionImageForDelete.delete();
 		LOGGER.info("FROM class ProfileImageCompressionController,method: profileImageCompression()--DELETED--"
 				+ profileImageCode + ".jpeg");
+		
+		File afterCompressionDeleteImageNullPacket = new File(
+				"H:\\MiniFacebook-All-Images-Pre-Compression-Dont-Delete-this" + profileImageCode + ".jpeg");
+		afterCompressionDeleteImageNullPacket.delete();
+		LOGGER.info("FROM class ProfileImageCompressionController,method: profileImageCompression()--DELETED--"
+				+ "MiniFacebook-All-Images-Pre-Compression-Dont-Delete-this"+ profileImageCode + ".jpeg");
+		
+		
+		
+		
+		
 		profileImageCode = null;
 	}
+      //PROFILE IMAGE RESIZE
+	private static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
+        BufferedImage scaledImage = null;
+        if (imageToScale != null) {
+            scaledImage = new BufferedImage(dWidth, dHeight, imageToScale.getType());
+            Graphics2D graphics2D = scaledImage.createGraphics();
+            graphics2D.drawImage(imageToScale, 0, 0, dWidth, dHeight, null);
+            graphics2D.dispose();
+        }
+        return scaledImage;
+    }
 
 }
 

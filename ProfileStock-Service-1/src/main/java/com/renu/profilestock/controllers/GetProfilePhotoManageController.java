@@ -3,6 +3,7 @@ package com.renu.profilestock.controllers;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -115,7 +116,9 @@ public Resource loadProfileSinglePhoto(String photoCode) {
 public ResponseEntity<Resource> getSingleProfilePhoto(@PathVariable("uid")String uid) {
 	LOGGER.info("FROM class GetProfilePhotoManageController,method : getSingleProfilePhoto()---UID : "+uid);
 	//GET LATEST SINGLE VALUES
-	ProfilePhotosEntity profilePhotosEntity=profilePhotosEntityRepository.getSingleProfilePhotoByUid(uid);
+	List<ProfilePhotosEntity>list=new ArrayList<>();
+	list=profilePhotosEntityRepository.getSingleProfilePhotoByUid(uid);
+	ProfilePhotosEntity profilePhotosEntity=list.get(list.size()-1);
 	String singlePhotoCode=profilePhotosEntity.getPhotoCode();
 	
 	Resource file = loadProfileSinglePhoto(singlePhotoCode);
