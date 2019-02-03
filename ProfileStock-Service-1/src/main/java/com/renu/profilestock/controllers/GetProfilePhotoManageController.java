@@ -28,8 +28,11 @@ import com.renu.profilestock.repositories.ProfilePhotosEntityRepository;
 @RequestMapping(value="/photo")
 public class GetProfilePhotoManageController {
 private static final Logger LOGGER=LoggerFactory.getLogger(GetProfilePhotoManageController.class);
-//PHOTO GET URL
-	private static final String PHOTO_GET_URL="http://profile-service/photo/uid/";
+//ALL PHOTO GET URL
+	private static final String ALL_PROFILE_PHOTOS_GET_URL="http://profile-service/photo/uid/";
+	//Last PHOTO GET URL
+			private static final String LAST_PROFILE_PHOTOS_GET_URL="http://profile-service/photo/uid/last/";
+
 	//GET PROFILE PHOTO URL
 		private static final Path PROOFILE_PHOTO_URL = Paths.get("H:\\MiniFacebook-All-Images-Compressed\\");
 
@@ -50,7 +53,7 @@ public ResponseEntity<List<ProfilePhotosEntity>> storeUID(@PathVariable("uid") S
 	
 	
 	ResponseEntity<List<ProfilePhotosEntity>> profilePhotosEntities =
-	        restTemplate.exchange(PHOTO_GET_URL+uid,
+	        restTemplate.exchange(ALL_PROFILE_PHOTOS_GET_URL+uid,
 	            HttpMethod.GET, null, new ParameterizedTypeReference<List<ProfilePhotosEntity>>() {
 	            });
 	
@@ -66,6 +69,45 @@ public ResponseEntity<List<ProfilePhotosEntity>> fallbackForStorUID(@PathVariabl
 	List<ProfilePhotosEntity> profilePhotosEntity=profilePhotosEntityRepository.getAllProfilePhotosByUid(uid);
 	return ResponseEntity.ok().body(profilePhotosEntity);
 }
+
+
+
+
+//-------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackForLastProfilePhotoInformation")
+//GET LAST PROFILE PHOTO INFORMATION
+@GetMapping(value="/uid/last/{uid}")
+public ResponseEntity<List<ProfilePhotosEntity>> fallbackForAllProfilePhotoInformation(@PathVariable("uid") String uid) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackForAllProfilePhotoInformation()---ENTER--"+uid);
+	
+	
+	ResponseEntity<List<ProfilePhotosEntity>> profilePhotosEntities =
+	        restTemplate.exchange(LAST_PROFILE_PHOTOS_GET_URL+uid,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<List<ProfilePhotosEntity>>() {
+	            });
+	
+	
+	
+	return profilePhotosEntities;
+
+
+}
+//HYSTRIX FOR fallbackForStorUID
+public ResponseEntity<List<ProfilePhotosEntity>> fallbackForLastProfilePhotoInformation(@PathVariable("uid") String uid,Throwable hystrixCommand) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackForLastProfilePhotoInformation()---UID : "+uid);
+	List<ProfilePhotosEntity> profilePhotosEntity=profilePhotosEntityRepository.getAllProfilePhotosByUid(uid);
+List<ProfilePhotosEntity>profilePhotosEntities=new ArrayList<ProfilePhotosEntity>();
+ProfilePhotosEntity profilePhotosEntity2=profilePhotosEntity.get(0);
+profilePhotosEntities.add(profilePhotosEntity2);
+	return ResponseEntity.ok().body(profilePhotosEntities);
+}
+
+
+//-----
+
+
 
 
 
@@ -112,16 +154,11 @@ public Resource loadProfileSinglePhoto(String photoCode) {
 }
 
 
-@GetMapping("/getProfilePhoto/single/{uid}")
-public ResponseEntity<Resource> getSingleProfilePhoto(@PathVariable("uid")String uid) {
-	LOGGER.info("FROM class GetProfilePhotoManageController,method : getSingleProfilePhoto()---UID : "+uid);
-	//GET LATEST SINGLE VALUES
-	List<ProfilePhotosEntity>list=new ArrayList<>();
-	list=profilePhotosEntityRepository.getSingleProfilePhotoByUid(uid);
-	ProfilePhotosEntity profilePhotosEntity=list.get(list.size()-1);
-	String singlePhotoCode=profilePhotosEntity.getPhotoCode();
+@GetMapping("/getProfilePhoto/single/{photoCode}")
+public ResponseEntity<Resource> getSingleProfilePhoto(@PathVariable("photoCode")String photoCode) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : getSingleProfilePhoto()---photoCode : "+photoCode);
 	
-	Resource file = loadProfileSinglePhoto(singlePhotoCode);
+	Resource file = loadProfileSinglePhoto(photoCode);
 	return ResponseEntity.ok().body(file);
 }
 

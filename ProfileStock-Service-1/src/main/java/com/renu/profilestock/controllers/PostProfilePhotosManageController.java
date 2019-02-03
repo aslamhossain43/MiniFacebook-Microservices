@@ -22,10 +22,10 @@ import com.renu.profilestock.repositories.ProfilePhotosEntityRepository;
 @RestController
 @RequestMapping(value = "/image")
 @RibbonClient(name = "profileStock-service", configuration = RibbonConfiguration.class)
-public class ProfilePhotosManageController {
+public class PostProfilePhotosManageController {
   
 	// LOGGER
-	private static final Logger LOGGER = LoggerFactory.getLogger(ProfilePhotosManageController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PostProfilePhotosManageController.class);
 	//NOT STATIC OTHERWISE NOT WORKS
 	@Autowired
 	RestTemplate restTemplate;

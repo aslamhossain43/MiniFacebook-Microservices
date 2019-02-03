@@ -51,7 +51,7 @@ public class ProfilePhotosCompressionAndUploadController {
 		}
          //FOR RESIZE TO 220*220
 		
-		resizedRealImage=scale(bufferedrealImage, 168, 168);
+		resizedRealImage=scale(bufferedrealImage, 700, 700);
 		
 		
 		// CONVERT INTO STREAM

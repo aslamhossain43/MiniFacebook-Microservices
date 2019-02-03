@@ -20,14 +20,19 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.renu.zuul.config.RibbonConfiguration;
+import com.renu.zuul.models.ProfilePhotosEntity;
 
 @RestController
 @RequestMapping(value="/zuul-profileStock")
 @RibbonClient(name = "zuul-ribbon", configuration = RibbonConfiguration.class)
 public class ProfileStockServiceController {
 private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceController.class);
-//PHOTO GET URL
+//PHOTO ALL GET URL
 	private static final String GET_PROFILE_PHOTO_INFORMATION="http://profileStock-service/photo/uid/";
+
+	// LAST PHOTO GET URL
+		private static final String GET_LAST_PROFILE_PHOTO_INFORMATION="http://profileStock-service/photo/uid/last/";
+	
 	//PHOTO GET BY ALL PHOTOS PHOTO CODE
 		private static final String GET_PROFILE_ALL_PHOTOS="http://profileStock-service/photo/getProfilePhoto/";
 	
@@ -36,11 +41,13 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 			
 		// PHOTO ADD URL
 		private static final String PHOTO_ADD_URL="http://profileStock-service/image/addImage";
+		//DELETE SINGLE PROFILE PHOTO
+		private static final String DELETE_SINGLE_PROFILE_PHOTO_URL="http://profileStock-service/delete/profilePhoto/single/";
 	//FOR RIBBON
 	@Autowired
 	RestTemplate restTemplate;
 	
-	// SEND UID
+	// SEND UID TO GET PROFILE PHOTOS INFORMATIONS
 	@RequestMapping(value="/getprofilephotoinformation/{uid}")
 	public ResponseEntity<?>getprofilephotoinformation(@PathVariable("uid") String uid) {
 		LOGGER.info("FROM class ProfileStockServiceController,method : getprofilephotoinformation()--ENTER--UID : "+uid);
@@ -57,9 +64,27 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 		
 	}
 	
+	// SEND UID TO GET LAST PROFILE PHOTO INFORMATION
+		@RequestMapping(value="/getprofilephotoinformation/last/{uid}")
+		public ResponseEntity<?>getLastProfilephotoinformation(@PathVariable("uid") String uid) {
+			LOGGER.info("FROM class ProfileStockServiceController,method : getLastProfilephotoinformation()--ENTER--UID : "+uid);
+
+			ResponseEntity<List<?>> profilePhotosEntities =
+			        restTemplate.exchange(GET_LAST_PROFILE_PHOTO_INFORMATION+uid,
+			            HttpMethod.GET, null, new ParameterizedTypeReference<List<?>>() {
+			            });
+			
+			
+			
+			return profilePhotosEntities;
+			
+			
+		}
 	
 	
-	//SEND PHOTO
+	
+	
+	//ADD PROFILE PHOTO
 	@RequestMapping(value="/profileimageadd")
 	public ResponseEntity<?>profileimageadd(@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage, @RequestParam("uid") String uid) throws Exception {
 		LOGGER.info("FROM class ProfileStockServiceController,method : profileimageadd()--ENTER--UID : "+uid);
@@ -71,7 +96,7 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 		return ResponseEntity.ok().body(response);
 	}
 	
-	// SEND PHOTO CODE for ALL PHOTOS
+	// SEND PHOTO CODE TO GET ALL PHOTOS ACCORDING TO UID
 	@RequestMapping(value="/photoCode/{photoCode}")
 	public ResponseEntity<?>getProfileAllPhotos(@PathVariable("photoCode") String photoCode) {
 		LOGGER.info("FROM class ProfileStockServiceController,method : getProfileAllPhotos()--ENTER--photoCode : "+photoCode);
@@ -88,13 +113,13 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 	
 	
 	
-	// SEND PHOTO CODE for SINGLE PHOTOS
-		@RequestMapping(value="/photoCode/single/{uid}")
-		public ResponseEntity<?>getProfileSinglePhoto(@PathVariable("uid") String uid) {
-			LOGGER.info("FROM class ProfileStockServiceController,method : getProfileSinglePhoto()--ENTER--UID : "+uid);
+	// SEND PHOTO CODE TO GET SINGLE PHOTO
+		@RequestMapping(value="/single/photoCode/{photoCode}")
+		public ResponseEntity<Resource>getProfileSinglePhoto(@PathVariable("photoCode") String photoCode) {
+			LOGGER.info("FROM class ProfileStockServiceController,method : getProfileSinglePhoto()--ENTER--photoCode : "+photoCode);
 
-			ResponseEntity<?> profilePhoto =
-			        restTemplate.getForEntity(GET_PROFILE_SINGLE_PHOTO+uid,Resource.class);
+			ResponseEntity<Resource> profilePhoto =
+			        restTemplate.getForEntity(GET_PROFILE_SINGLE_PHOTO+photoCode,Resource.class);
 			
 			
 			
@@ -102,6 +127,29 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 			
 			
 		}
+		
+		//  DELETE PROFILE SINGLE PHOTO BY ID
+				@RequestMapping(value="/delete/profilePhoto/single/{id}")
+				public ResponseEntity<?>deleteProfileSinglePhoto(@PathVariable("id") String id) {
+					LOGGER.info("FROM class ProfileStockServiceController,method : deleteProfileSinglePhoto()--ENTER--ID : "+id);
+/*
+					ResponseEntity<List<?>> profilePhotosEntities =
+					        restTemplate.exchange(DELETE_SINGLE_PROFILE_PHOTO_URL+id,
+					            HttpMethod.GET, null, new ParameterizedTypeReference<List<?>>() {
+					            });
+		*/					
+					ResponseEntity<?>responseEntity=restTemplate.getForEntity(DELETE_SINGLE_PROFILE_PHOTO_URL+id, String.class);
+					
+					
+					
+					return responseEntity;
+					
+					
+				}
+				
+				
+				
+				
 	
 	
 }
