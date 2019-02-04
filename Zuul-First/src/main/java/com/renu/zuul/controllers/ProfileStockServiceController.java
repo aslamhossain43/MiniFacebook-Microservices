@@ -20,8 +20,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.renu.zuul.config.RibbonConfiguration;
-import com.renu.zuul.models.ProfilePhotosEntity;
-
 @RestController
 @RequestMapping(value="/zuul-profileStock")
 @RibbonClient(name = "zuul-ribbon", configuration = RibbonConfiguration.class)
@@ -132,12 +130,7 @@ private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceCo
 				@RequestMapping(value="/delete/profilePhoto/single/{id}")
 				public ResponseEntity<?>deleteProfileSinglePhoto(@PathVariable("id") String id) {
 					LOGGER.info("FROM class ProfileStockServiceController,method : deleteProfileSinglePhoto()--ENTER--ID : "+id);
-/*
-					ResponseEntity<List<?>> profilePhotosEntities =
-					        restTemplate.exchange(DELETE_SINGLE_PROFILE_PHOTO_URL+id,
-					            HttpMethod.GET, null, new ParameterizedTypeReference<List<?>>() {
-					            });
-		*/					
+					
 					ResponseEntity<?>responseEntity=restTemplate.getForEntity(DELETE_SINGLE_PROFILE_PHOTO_URL+id, String.class);
 					
 					

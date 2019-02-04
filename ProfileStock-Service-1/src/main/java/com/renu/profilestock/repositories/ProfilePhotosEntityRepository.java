@@ -12,12 +12,9 @@ import com.renu.profilestock.models.ProfilePhotosEntity;
 public interface ProfilePhotosEntityRepository extends JpaRepository<ProfilePhotosEntity, Long>,JpaSpecificationExecutor<ProfilePhotosEntity> {
 ProfilePhotosEntity getById(Long id);
 //GET ALL PROFILE PHOTOS USING UID
-static final String ALL_PROFILE_PHOTOS_BY_UID="FROM ProfilePhotosEntity where uid=:uid";
+static final String ALL_PROFILE_PHOTOS_BY_UID="FROM ProfilePhotosEntity where uid=:uid ORDER BY id DESC";
 @Query(ALL_PROFILE_PHOTOS_BY_UID)
 List<ProfilePhotosEntity>getAllProfilePhotosByUid(@Param("uid") String uid);
-//GET SINGLE PROFILE PHOTO USING UID
-static final String SINGLE_PROFILE_PHOTO_BY_UID="FROM ProfilePhotosEntity where uid=:uid";
-@Query(SINGLE_PROFILE_PHOTO_BY_UID)
-List<ProfilePhotosEntity> getSingleProfilePhotoByUid(@Param("uid") String uid);
+
 
 }
