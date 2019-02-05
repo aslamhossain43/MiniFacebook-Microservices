@@ -23,8 +23,8 @@ import com.renu.zuul.config.RibbonConfiguration;
 @RestController
 @RequestMapping(value="/zuul-profileStock")
 @RibbonClient(name = "zuul-ribbon", configuration = RibbonConfiguration.class)
-public class ProfileStockServiceController {
-private static final Logger LOGGER=LoggerFactory.getLogger(ProfileStockServiceController.class);
+public class ProfilePhotosRouteController {
+private static final Logger LOGGER=LoggerFactory.getLogger(ProfilePhotosRouteController.class);
 //PHOTO ALL GET URL
 	private static final String GET_PROFILE_PHOTO_INFORMATION="http://profileStock-service/photo/uid/";
 
