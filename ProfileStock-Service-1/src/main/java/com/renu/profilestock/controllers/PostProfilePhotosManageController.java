@@ -93,7 +93,7 @@ public class PostProfilePhotosManageController {
 	}
 //HYSTRIX fallbackForaddProfileImage
 	public ResponseEntity<ProfilePhotosEntity> fallbackForaddProfileImage(@RequestParam("selectedProfileImage") MultipartFile selectedProfileImage,
-			@RequestParam("uid") String uid,Throwable hystrixCommand) throws Exception {
+			@RequestParam("uid") String uid) throws Exception {
 		LOGGER.info("FROM class ProfileImageManageController,method : fallbackForaddProfileImage()--ENTER--");
 		LOGGER.info("FROM class ProfileImageManageController,method : fallbackForaddProfileImage()--UID: " + uid);
 		ProfilePhotosEntity profilePhotosEntity=null;
