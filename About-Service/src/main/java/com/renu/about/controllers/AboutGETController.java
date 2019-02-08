@@ -21,6 +21,7 @@ private static final Logger LOGGER=LoggerFactory.getLogger(AboutGETController.cl
 // WORKPLACE REPOSITORY
 @Autowired
 WorkPlaceRepository workPlaceRepository;
+//--------------------------
 // GET WORKPLACES ALL
 @GetMapping(value="/workplace/getAll/{uid}")
 public ResponseEntity<List<Workplace>>getAllWorkplacesByUID(@PathVariable String uid){
@@ -28,4 +29,29 @@ public ResponseEntity<List<Workplace>>getAllWorkplacesByUID(@PathVariable String
 	List<Workplace>workplaces=workPlaceRepository.getAllWorkplacesByUID(uid);
  return	ResponseEntity.ok().body(workplaces);
 }
+
+
+//-----------------
+
+//GET WORKPLACE BY ID
+@GetMapping(value="/workplace/single/{id}")
+public ResponseEntity<Workplace>getSingleWorkplaceByID(@PathVariable("id") Long id){
+	LOGGER.info("From class AboutGETController,method : getSingleWorkplaceByID()--ENTER--ID : "+id);
+	Workplace workplace=workPlaceRepository.getById(id);
+return	ResponseEntity.ok().body(workplace);
+}
+//-----------------
+
+//DELETE WORKPLACE BY ID
+@GetMapping(value="/workplace/single/delete/{id}")
+public ResponseEntity<String>deleteSingleWorkplaceByID(@PathVariable("id") Long id){
+	LOGGER.info("From class AboutGETController,method : deleteSingleWorkplaceByID()--ENTER--ID : "+id);
+	Workplace workplace=workPlaceRepository.getById(id);
+	workPlaceRepository.delete(workplace);
+	LOGGER.info("From class AboutGETController,method : deleteSingleWorkplaceByID()--DELETED--ID : "+id);
+	
+return	ResponseEntity.ok().body("SuccessCallback delete");
+}
+
+
 }

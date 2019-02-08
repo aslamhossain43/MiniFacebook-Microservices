@@ -30,9 +30,11 @@ WorkPlaceRepository workPlaceRepository;
 RestTemplate restTemplate;
 //GET ALL WORKPLACES URL
 private static final String GET_ALL_WORKPLACES_URL="http://about-service/about-get/workplace/getAll/";
-
-
-
+//GET WORKPLACE BY URL
+private static final String GET_SINGLE_WORKPLACE_URL="http://about-service/about-get/workplace/single/";
+//DELETE WORKPLACE BY URL
+private static final String DELETE_SINGLE_WORKPLACE_URL="http://about-service/about-get/workplace/single/delete/";
+//----------------------
 
 //HYSTRIX
 @HystrixCommand(fallbackMethod = "fallbackWorkplaceGETAll")
@@ -62,6 +64,65 @@ public ResponseEntity<List<Workplace>> fallbackWorkplaceGETAll(@PathVariable("ui
 
 
 
+//-----------------------------------------
 
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackWorkplaceGETByID")
+//GET UID FOR HANDLING OTHER PROCESS
+@GetMapping(value="/workplace/single/{id}")
+public ResponseEntity<Workplace> getSingleWorkplaceByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : getSingleWorkplaceByID()---ID : "+id);
+	
+	
+	ResponseEntity<Workplace> profilePhotosEntity =
+	        restTemplate.exchange(GET_SINGLE_WORKPLACE_URL+id,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<Workplace>() {
+	            });
+	
+	
+	
+	return profilePhotosEntity;
+
+
+}
+//HYSTRIX fallbackWorkplaceGETByID
+public ResponseEntity<Workplace> fallbackWorkplaceGETByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackWorkplaceGETByID()---ID : "+id);
+	Workplace profilePhotosEntity=workPlaceRepository.getById(id);
+	return ResponseEntity.ok().body(profilePhotosEntity);
+}
+
+
+//-----------------------------------------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackWorkplaceDELETEByID")
+//DELETE ID FOR HANDLING OTHER PROCESS
+@GetMapping(value="/workplace/single/delete/{id}")
+public ResponseEntity<String> deleteSingleWorkplaceByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : deleteSingleWorkplaceByID()---ID : "+id);
+	
+	
+	ResponseEntity<String> profilePhotosEntity =
+	        restTemplate.exchange(DELETE_SINGLE_WORKPLACE_URL+id,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+	            });
+	
+	
+	
+	return profilePhotosEntity;
+
+
+}
+//HYSTRIX fallbackWorkplaceDELETEByID
+public ResponseEntity<String> fallbackWorkplaceDELETEByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackWorkplaceDELETEByID---ID : "+id);
+	Workplace profilePhotosEntity=workPlaceRepository.getById(id);
+	workPlaceRepository.delete(profilePhotosEntity);
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackWorkplaceDELETEByID--DELETE--ID : "+id);
+	return ResponseEntity.ok().body("success delete");
+}
+
+//-----------------------------
 
 }

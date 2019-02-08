@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,12 @@ RestTemplate restTemplate;
 private static final String WORKPLACE_ADD_URL="http://aboutStock-service/aboutStock-post/add";
 //GET ALL WORKPLACES URL
 private static final String GET_ALL_WORKPLACES_URL="http://aboutStock-service/aboutStock-get/workplace/getAll/";
+//GET WORKPLACE BY ID URL
+private static final String GET_SINGLE_WORKPLACE_URL="http://aboutStock-service/aboutStock-get/workplace/single/";
+//UPDATE WORKPLACE BY ID URL
+private static final String UPDATE_SINGLE_WORKPLACE_URL="http://aboutStock-service/aboutStock-update/workplace/update/";
+//DELETE WORKPLACE BY ID URL
+private static final String DELETE_SINGLE_WORKPLACE_URL="http://aboutStock-service/aboutStock-get/workplace/single/delete/";
 @RequestMapping(value="/workplace/add")
 public ResponseEntity<?>workplaceAdd(@RequestBody Workplace workplace){
 	LOGGER.info("From class ProfileAboutRouteController,method : workplaceAdd()--ENTER--workplace : "+workplace.getWorkPlace());
@@ -35,7 +43,7 @@ Workplace responseEntity=restTemplate.postForObject(WORKPLACE_ADD_URL,workplace,
 return ResponseEntity.ok().body(responseEntity);
 }
 
-
+//---------------------
 //GET ALL WORKPLACES
 	@RequestMapping(value="/workplace/getAll/{uid}")
 	public ResponseEntity<?>getAllWorkplaces(@PathVariable("uid") String uid) {
@@ -53,11 +61,53 @@ return ResponseEntity.ok().body(responseEntity);
 		
 	}
 
+//---------------------
 
+	//GET WORKPLACE BY ID
+		@RequestMapping(value="/workplace/single/{id}")
+		public ResponseEntity<?>getSingleWorkplace(@PathVariable("id") Long id) {
+			LOGGER.info("FROM class ProfileStockServiceController,method : getSingleWorkplace()--ENTER--ID : "+id);
 
+			ResponseEntity<Workplace> profilePhotosEntity =
+			        restTemplate.exchange(GET_SINGLE_WORKPLACE_URL+id,
+			            HttpMethod.GET, null, new ParameterizedTypeReference<Workplace>() {
+			            });
+			
+			
+			
+			return profilePhotosEntity;
+			
+			
+		}
 
+		//---------------------
 
+		//DELETE WORKPLACE BY ID
+			@RequestMapping(value="/workplace/single/delete/{id}")
+			public ResponseEntity<?>getSingleDELETEWorkplace(@PathVariable("id") Long id) {
+				LOGGER.info("FROM class ProfileStockServiceController,method : getSingleWorkplace()--ENTER--ID : "+id);
 
+				ResponseEntity<String> profilePhotosEntity =
+				        restTemplate.exchange(DELETE_SINGLE_WORKPLACE_URL+id,
+				            HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+				            });
+				
+				
+				
+				return profilePhotosEntity;
+				
+				
+			}
 
+			//---------------------
+
+			//UPDATE WORKPLACE BY ID
+				@RequestMapping(value="/workplace/update/{id}")
+				public ResponseEntity<?>updateSingleWorkplace(@RequestBody Workplace workplace,@PathVariable("id") Long id) {
+					LOGGER.info("FROM class ProfileStockServiceController,method : updateSingleWorkplace()--ENTER--ID : "+id);
+                restTemplate.put(UPDATE_SINGLE_WORKPLACE_URL+id, workplace);
+					return ResponseEntity.ok().body("success update");
+					
+				}
 
 }
