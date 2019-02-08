@@ -13,7 +13,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.renu.about.config.RibbonConfiguration;
+import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
+import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
 
@@ -25,14 +27,22 @@ private static final Logger LOGGER=LoggerFactory.getLogger(AboutPOSTController.c
 // REST TEMPLATE 
 @Autowired
 RestTemplate restTemplate;
+//------------------------------------------------------------------------------------------------------
 // REPOSITORY
 @Autowired
 WorkPlaceRepository workPlaceRepository;
 // WORKPLACE ADD URL
-private static final String WORKPLACE_ADD_URL="http://about-service/aboutService-post/add";
+private static final String WORKPLACE_ADD_URL="http://about-service/aboutService-post/workplace/add";
+//------------------------------------------------------------------------------------------------------
+//REPOSITORY
+@Autowired
+ProfessionalSkillRepository professionalSkillRepository;
+//PROFESSIONAL SKILLS ADD URL
+private static final String PROFESSIONAL_SKILLS_ADD_URL="http://about-service/aboutService-post/professionalSkills/add";
+//-------------------------------------------------------------------------------------------------------------------
 	// WORKPLACE ADD
 @HystrixCommand(fallbackMethod="workplaceAddFallBack")
-@PostMapping(value="/add")
+@PostMapping(value="/workplace/add")
 public ResponseEntity<Workplace>addWorkplace(@RequestBody Workplace workplace){
 	LOGGER.info("From class AboutPOSTController,method : addWorkplace()--ENTER--");
 	Workplace workplace2=restTemplate.postForObject(WORKPLACE_ADD_URL,workplace,Workplace.class);
@@ -46,6 +56,22 @@ public ResponseEntity<Workplace>workplaceAddFallBack(@RequestBody Workplace work
 	return ResponseEntity.ok().body(workplace);
 }
 
+//-------------------------------------------------------------------------------------------------------------------
+	// PROFESSIONAL SKILL ADD
+@HystrixCommand(fallbackMethod="professionalSkillsAddFallBack")
+@PostMapping(value="/professionalSkills/add")
+public ResponseEntity<ProfessionalSkill>addProfessionalSkills(@RequestBody ProfessionalSkill professionalSkill){
+	LOGGER.info("From class AboutPOSTController,method : addProfessionalSkills()--ENTER--");
+	ProfessionalSkill professionalSkill2=restTemplate.postForObject(PROFESSIONAL_SKILLS_ADD_URL,professionalSkill,ProfessionalSkill.class);
+	return ResponseEntity.ok().body(professionalSkill2);
+}
+
+//HYSTRIX PROFESSIONAL SKILLS ADD
+public ResponseEntity<ProfessionalSkill>professionalSkillsAddFallBack(@RequestBody ProfessionalSkill professionalSkill){
+	LOGGER.info("From class AboutPOSTController,method : professionalSkillsAddFallBack()--ENTER--");
+	professionalSkillRepository.save(professionalSkill);
+	return ResponseEntity.ok().body(professionalSkill);
+}
 
 
 

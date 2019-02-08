@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
+import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
 
@@ -17,15 +19,32 @@ import com.renu.about.repositories.WorkPlaceRepository;
 @RequestMapping(value="/aboutService-post")
 public class AboutPOSTController {
 private static final Logger LOGGER=LoggerFactory.getLogger(AboutPOSTController.class);
-// ADD WORKPLACE
+//--------------------------------------------------------------------------------------------------
+// REPOSITORY
 @Autowired
 WorkPlaceRepository workPlaceRepository;
+//--------------------------------------------------------------------------------------------------
+//REPOSITORY
+@Autowired
+ProfessionalSkillRepository professionalSkillRepository;
+//----------------------------------------------------------------------------------------------------
 	// WORKPLACE ADD
-@PostMapping(value="/add")
+@PostMapping(value="/workplace/add")
 public ResponseEntity<Workplace>addWorkplace(@RequestBody Workplace workplace){
 	LOGGER.info("From class AboutPOSTController,method : addWorkplace()--ENTER--");
 	workPlaceRepository.save(workplace);
 return ResponseEntity.ok().body(workplace);
+}
+	
+//----------------------------------------------------------------------------------------------------
+	// PROFESSIONAL SKILLS ADD
+@PostMapping(value="/professionalSkills/add")
+public ResponseEntity<ProfessionalSkill>addProfessionalSkills(@RequestBody ProfessionalSkill professionalSkill){
+	LOGGER.info("From class AboutPOSTController,method : addProfessionalSkills()--ENTER--");
+	professionalSkillRepository.save(professionalSkill);
+	LOGGER.info("From class AboutPOSTController,method : addProfessionalSkills()--SAVED PROFESSIONAL SKILLS--");
+	
+return ResponseEntity.ok().body(professionalSkill);
 }
 	
 	

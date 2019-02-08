@@ -11,17 +11,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
+import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
 @RestController
 @RequestMapping(value="/about-get")
 public class AboutGETController {
 private static final Logger LOGGER=LoggerFactory.getLogger(AboutGETController.class);
-// WORKPLACE REPOSITORY
+//---------------------------------------------------------------------------------------------------------------
 @Autowired
 WorkPlaceRepository workPlaceRepository;
-//--------------------------
+//---------------------------------------------------------------------------------------------------------------
+@Autowired
+ProfessionalSkillRepository professionalSkillRepository;
+//---------------------------------------------------------------------------------------------------------------
 // GET WORKPLACES ALL
 @GetMapping(value="/workplace/getAll/{uid}")
 public ResponseEntity<List<Workplace>>getAllWorkplacesByUID(@PathVariable String uid){
@@ -29,8 +34,6 @@ public ResponseEntity<List<Workplace>>getAllWorkplacesByUID(@PathVariable String
 	List<Workplace>workplaces=workPlaceRepository.getAllWorkplacesByUID(uid);
  return	ResponseEntity.ok().body(workplaces);
 }
-
-
 //-----------------
 
 //GET WORKPLACE BY ID
@@ -52,6 +55,34 @@ public ResponseEntity<String>deleteSingleWorkplaceByID(@PathVariable("id") Long 
 	
 return	ResponseEntity.ok().body("SuccessCallback delete");
 }
+//-----------------------------------------------------------------------------------------------------------
+//GET PROFESSIONAL SKILLS ALL
+@GetMapping(value="/professionalSkills/getAll/{uid}")
+public ResponseEntity<List<ProfessionalSkill>>getAllProfessionalSkillsByUID(@PathVariable String uid){
+	LOGGER.info("From class AboutGETController,method : getAllProfessionalSkillsByUID()--ENTER--UID : "+uid);
+	List<ProfessionalSkill>professionalSkills=professionalSkillRepository.getAllProfessionalSkillsByUID(uid);
+return	ResponseEntity.ok().body(professionalSkills);
+}
+//-----------------
 
+//GET PROFESSIONAL SKILLS BY ID
+@GetMapping(value="/professionalSkills/single/{id}")
+public ResponseEntity<ProfessionalSkill>getSingleProfessionalSkillsByID(@PathVariable("id") Long id){
+	LOGGER.info("From class AboutGETController,method : getSingleProfessionalSkillsByID()--ENTER--ID : "+id);
+	ProfessionalSkill professionalSkill=professionalSkillRepository.getById(id);
+return	ResponseEntity.ok().body(professionalSkill);
+}
+//-----------------
+
+//DELETE PROFESSIONA SKILLS BY ID
+@GetMapping(value="/professionalSkills/single/delete/{id}")
+public ResponseEntity<String>deleteSingleProfessionalSkillsByID(@PathVariable("id") Long id){
+	LOGGER.info("From class AboutGETController,method : deleteSingleProfessionalSkillsByID()--ENTER--ID : "+id);
+	ProfessionalSkill professionalSkill=professionalSkillRepository.getById(id);
+	professionalSkillRepository.delete(professionalSkill);
+	LOGGER.info("From class AboutGETController,method : deleteSingleProfessionalSkillsByID()--DELETED--ID : "+id);
+	
+return	ResponseEntity.ok().body("SuccessCallback delete");
+}
 
 }

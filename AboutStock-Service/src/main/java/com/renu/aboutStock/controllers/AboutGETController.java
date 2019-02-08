@@ -15,26 +15,41 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
+import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
 @RestController
 @RequestMapping(value="/aboutStock-get")
 public class AboutGETController {
 private static final Logger LOGGER=LoggerFactory.getLogger(AboutGETController.class);
-// WORKPLACE REPOSITORY
-@Autowired
-WorkPlaceRepository workPlaceRepository;
 // REST TEMPLATE
 @Autowired
 RestTemplate restTemplate;
+//------------------------------------------------------------------------------------------------
+// WORKPLACE REPOSITORY
+@Autowired
+WorkPlaceRepository workPlaceRepository;
+//------------------------------------------------------------------------------------------------
+//PROFESSIONAL REPOSITORY
+@Autowired
+ProfessionalSkillRepository professionalSkillRepository;
+//-------------------------------------------------------------------------------------------------
 //GET ALL WORKPLACES URL
 private static final String GET_ALL_WORKPLACES_URL="http://about-service/about-get/workplace/getAll/";
 //GET WORKPLACE BY URL
 private static final String GET_SINGLE_WORKPLACE_URL="http://about-service/about-get/workplace/single/";
 //DELETE WORKPLACE BY URL
 private static final String DELETE_SINGLE_WORKPLACE_URL="http://about-service/about-get/workplace/single/delete/";
-//----------------------
+//-------------------------------------------------------------------------------------------------
+//GET ALL PROFESSIONAL SKILLS URL
+private static final String GET_ALL_PROFESSIONAL_SKILLS_URL="http://about-service/about-get/professionalSkills/getAll/";
+//GET PROFESSIONAL SKILLS BY URL
+private static final String GET_SINGLE_PROFESSIONAL_SKILLS_URL="http://about-service/about-get/professionalSkills/single/";
+//DELETE PROFESSIONAL SKILLS BY URL
+private static final String DELETE_SINGLE_PROFESSIONAL_SKILLS_URL="http://about-service/about-get/professionalSkills/single/delete/";
+//-----------------------------------------------------------------------------------------------------------------
 
 //HYSTRIX
 @HystrixCommand(fallbackMethod = "fallbackWorkplaceGETAll")
@@ -62,13 +77,11 @@ public ResponseEntity<List<Workplace>> fallbackWorkplaceGETAll(@PathVariable("ui
 	return ResponseEntity.ok().body(profilePhotosEntity);
 }
 
-
-
 //-----------------------------------------
 
 //HYSTRIX
 @HystrixCommand(fallbackMethod = "fallbackWorkplaceGETByID")
-//GET UID FOR HANDLING OTHER PROCESS
+//GET ID FOR HANDLING OTHER PROCESS
 @GetMapping(value="/workplace/single/{id}")
 public ResponseEntity<Workplace> getSingleWorkplaceByID(@PathVariable("id") Long id) {
 	LOGGER.info("FROM class GetProfilePhotoManageController,method : getSingleWorkplaceByID()---ID : "+id);
@@ -91,6 +104,7 @@ public ResponseEntity<Workplace> fallbackWorkplaceGETByID(@PathVariable("id") Lo
 	Workplace profilePhotosEntity=workPlaceRepository.getById(id);
 	return ResponseEntity.ok().body(profilePhotosEntity);
 }
+
 
 
 //-----------------------------------------
@@ -122,7 +136,93 @@ public ResponseEntity<String> fallbackWorkplaceDELETEByID(@PathVariable("id") Lo
 	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackWorkplaceDELETEByID--DELETE--ID : "+id);
 	return ResponseEntity.ok().body("success delete");
 }
+//-----------------------------------------------------------------------------------------------------------------
 
-//-----------------------------
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackProfessionalSkillsGETAll")
+//GET UID FOR HANDLING OTHER PROCESS
+@GetMapping(value="/professionalSkills/getAll/{uid}")
+public ResponseEntity<List<ProfessionalSkill>> getAllProfessionalSkillsByUID(@PathVariable("uid") String uid) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method :  getAllProfessionalSkillsByUID()---UID : "+uid);
+	
+	
+	ResponseEntity<List<ProfessionalSkill>> profilePhotosEntities =
+	        restTemplate.exchange(GET_ALL_PROFESSIONAL_SKILLS_URL+uid,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<List<ProfessionalSkill>>() {
+	            });
+	
+	
+	
+	return profilePhotosEntities;
+
+
+}
+//HYSTRIX FOR fallbackForStorUID
+public ResponseEntity<List<ProfessionalSkill>>fallbackProfessionalSkillsGETAll(@PathVariable("uid") String uid) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackProfessionalSkillsGETAll()---UID : "+uid);
+	List<ProfessionalSkill> profilePhotosEntity=professionalSkillRepository.getAllProfessionalSkillsByUID(uid);
+	return ResponseEntity.ok().body(profilePhotosEntity);
+}
+
+//-----------------------------------------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackProfessionalSkillsGETByID")
+//GET ID FOR HANDLING OTHER PROCESS
+@GetMapping(value="/professionalSkills/single/{id}")
+public ResponseEntity<ProfessionalSkill> getSingleProfessionalSkillsByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : getSingleProfessionalSkillsByID()---ID : "+id);
+	
+	
+	ResponseEntity<ProfessionalSkill> profilePhotosEntity =
+	        restTemplate.exchange(GET_SINGLE_PROFESSIONAL_SKILLS_URL+id,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<ProfessionalSkill>() {
+	            });
+	
+	
+	
+	return profilePhotosEntity;
+
+
+}
+//HYSTRIX fallbackWorkplaceGETByID
+public ResponseEntity<ProfessionalSkill> fallbackProfessionalSkillsGETByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackProfessionalSkillsGETByID()---ID : "+id);
+	ProfessionalSkill professionalSkill=professionalSkillRepository.getById(id);
+	return ResponseEntity.ok().body(professionalSkill);
+}
+
+
+
+//-----------------------------------------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackProfessionalSkillsDELETEByID")
+//DELETE ID FOR HANDLING OTHER PROCESS
+@GetMapping(value="/professionalSkills/single/delete/{id}")
+public ResponseEntity<String> deleteSingleProfessionalSkillsByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : deleteSingleProfessionalSkillsByID()---ID : "+id);
+	
+	
+	ResponseEntity<String> profilePhotosEntity =
+	        restTemplate.exchange(DELETE_SINGLE_PROFESSIONAL_SKILLS_URL+id,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+	            });
+	
+	
+	
+	return profilePhotosEntity;
+
+
+}
+//HYSTRIX fallbackWorkplaceDELETEByID
+public ResponseEntity<String>fallbackProfessionalSkillsDELETEByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackProfessionalSkillsDELETEByID()---ID : "+id);
+	ProfessionalSkill professionalSkill=professionalSkillRepository.getById(id);
+	professionalSkillRepository.delete(professionalSkill);
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackProfessionalSkillsDELETEByID()--DELETE--ID : "+id);
+	return ResponseEntity.ok().body("success delete");
+}
+
 
 }
