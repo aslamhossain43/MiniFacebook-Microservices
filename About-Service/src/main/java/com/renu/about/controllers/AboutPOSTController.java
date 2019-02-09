@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.renu.about.models.College;
 import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
+import com.renu.about.repositories.CollegeRepository;
 import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
@@ -27,6 +29,10 @@ WorkPlaceRepository workPlaceRepository;
 //REPOSITORY
 @Autowired
 ProfessionalSkillRepository professionalSkillRepository;
+//--------------------------------------------------------------------------------------------------
+//REPOSITORY
+@Autowired
+CollegeRepository collegeRepository;
 //----------------------------------------------------------------------------------------------------
 	// WORKPLACE ADD
 @PostMapping(value="/workplace/add")
@@ -47,6 +53,16 @@ public ResponseEntity<ProfessionalSkill>addProfessionalSkills(@RequestBody Profe
 return ResponseEntity.ok().body(professionalSkill);
 }
 	
+//----------------------------------------------------------------------------------------------------
+	// COLLEGE ADD
+@PostMapping(value="/college/add")
+public ResponseEntity<College>addCollege(@RequestBody College college){
+	LOGGER.info("From class AboutPOSTController,method : addCollege()--ENTER--");
+	collegeRepository.save(college);
+	LOGGER.info("From class AboutPOSTController,method : addCollege()--SAVED COLLEGE--");
+	
+return ResponseEntity.ok().body(college);
+}
 	
 	
 	

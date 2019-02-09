@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.renu.about.models.College;
 import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
+import com.renu.about.repositories.CollegeRepository;
 import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
@@ -26,6 +28,9 @@ WorkPlaceRepository workPlaceRepository;
 //---------------------------------------------------------------------------------------------------------------
 @Autowired
 ProfessionalSkillRepository professionalSkillRepository;
+//---------------------------------------------------------------------------------------------------------------
+@Autowired
+CollegeRepository collegeRepository;
 //---------------------------------------------------------------------------------------------------------------
 // GET WORKPLACES ALL
 @GetMapping(value="/workplace/getAll/{uid}")
@@ -81,6 +86,35 @@ public ResponseEntity<String>deleteSingleProfessionalSkillsByID(@PathVariable("i
 	ProfessionalSkill professionalSkill=professionalSkillRepository.getById(id);
 	professionalSkillRepository.delete(professionalSkill);
 	LOGGER.info("From class AboutGETController,method : deleteSingleProfessionalSkillsByID()--DELETED--ID : "+id);
+	
+return	ResponseEntity.ok().body("SuccessCallback delete");
+}
+//-----------------------------------------------------------------------------------------------------------
+//GET COLLEGE ALL
+@GetMapping(value="/college/getAll/{uid}")
+public ResponseEntity<List<College>>getAllCollegesByUID(@PathVariable String uid){
+	LOGGER.info("From class AboutGETController,method : getAllCollegesByUID()--ENTER--UID : "+uid);
+	List<College>colleges=collegeRepository.getAllCollegesByUID(uid);
+return	ResponseEntity.ok().body(colleges);
+}
+//-----------------
+
+//GET COLLEGE BY ID
+@GetMapping(value="/college/single/{id}")
+public ResponseEntity<College>getSingleCollegeByID(@PathVariable("id") Long id){
+	LOGGER.info("From class AboutGETController,method : getSingleCollegeByID()--ENTER--ID : "+id);
+	College college=collegeRepository.getById(id);
+return	ResponseEntity.ok().body(college);
+}
+//-----------------
+
+//DELETE COLLEGE BY ID
+@GetMapping(value="/college/single/delete/{id}")
+public ResponseEntity<String>deleteSingleCollegeByID(@PathVariable("id") Long id){
+	LOGGER.info("From class AboutGETController,method : deleteSingleCollegeByID()--ENTER--ID : "+id);
+	College college=collegeRepository.getById(id);
+	collegeRepository.delete(college);;
+	LOGGER.info("From class AboutGETController,method : deleteSingleCollegeByID()--DELETED--ID : "+id);
 	
 return	ResponseEntity.ok().body("SuccessCallback delete");
 }

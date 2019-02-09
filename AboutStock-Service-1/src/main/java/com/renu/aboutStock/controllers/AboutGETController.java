@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.renu.about.models.College;
 import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
+import com.renu.about.repositories.CollegeRepository;
 import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
@@ -35,6 +37,10 @@ WorkPlaceRepository workPlaceRepository;
 //PROFESSIONAL REPOSITORY
 @Autowired
 ProfessionalSkillRepository professionalSkillRepository;
+//------------------------------------------------------------------------------------------------
+//COLLEGE REPOSITORY
+@Autowired
+CollegeRepository collegeRepository;
 //-------------------------------------------------------------------------------------------------
 //GET ALL WORKPLACES URL
 private static final String GET_ALL_WORKPLACES_URL="http://about-service/about-get/workplace/getAll/";
@@ -49,6 +55,14 @@ private static final String GET_ALL_PROFESSIONAL_SKILLS_URL="http://about-servic
 private static final String GET_SINGLE_PROFESSIONAL_SKILLS_URL="http://about-service/about-get/professionalSkills/single/";
 //DELETE PROFESSIONAL SKILLS BY URL
 private static final String DELETE_SINGLE_PROFESSIONAL_SKILLS_URL="http://about-service/about-get/professionalSkills/single/delete/";
+//-------------------------------------------------------------------------------------------------
+//GET ALL COLLEGES URL
+private static final String GET_ALL_COLLEGES_URL="http://about-service/about-get/college/getAll/";
+//GET COLLEGE URL
+private static final String GET_SINGLE_COLLEGES_URL="http://about-service/about-get/college/single/";
+//DELETE COLLEGE BY URL
+private static final String DELETE_SINGLE_COLLEGE_URL="http://about-service/about-get/college/single/delete/";
+
 //-----------------------------------------------------------------------------------------------------------------
 
 //HYSTRIX
@@ -221,6 +235,94 @@ public ResponseEntity<String>fallbackProfessionalSkillsDELETEByID(@PathVariable(
 	ProfessionalSkill professionalSkill=professionalSkillRepository.getById(id);
 	professionalSkillRepository.delete(professionalSkill);
 	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackProfessionalSkillsDELETEByID()--DELETE--ID : "+id);
+	return ResponseEntity.ok().body("success delete");
+}
+
+//-----------------------------------------------------------------------------------------------------------------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackCollegeGETAll")
+//GET UID FOR HANDLING OTHER PROCESS
+@GetMapping(value="/college/getAll/{uid}")
+public ResponseEntity<List<College>> getAllCollegesByUID(@PathVariable("uid") String uid) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method :  getAllCollegesByUID()---UID : "+uid);
+	
+	
+	ResponseEntity<List<College>> profilePhotosEntities =
+	        restTemplate.exchange(GET_ALL_COLLEGES_URL+uid,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<List<College>>() {
+	            });
+	
+	
+	
+	return profilePhotosEntities;
+
+
+}
+//HYSTRIX FOR fallbackForStorUID
+public ResponseEntity<List<College>>fallbackCollegeGETAll(@PathVariable("uid") String uid) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackCollegeGETAll()---UID : "+uid);
+	List<College> colleges=collegeRepository.getAllCollegesByUID(uid);
+	return ResponseEntity.ok().body(colleges);
+}
+
+//-----------------------------------------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackCollegeGETByID")
+//GET ID FOR HANDLING OTHER PROCESS
+@GetMapping(value="/college/single/{id}")
+public ResponseEntity<College> getSingleCollegeByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : getSingleCollegeByID()---ID : "+id);
+	
+	
+	ResponseEntity<College> college =
+	        restTemplate.exchange(GET_SINGLE_COLLEGES_URL+id,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<College>() {
+	            });
+	
+	
+	
+	return college;
+
+
+}
+//HYSTRIX fallbackCollegeGETByID
+public ResponseEntity<College>fallbackCollegeGETByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackCollegeGETByID()---ID : "+id);
+	College college=collegeRepository.getById(id);
+	return ResponseEntity.ok().body(college);
+}
+
+
+
+//-----------------------------------------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackCollegesDELETEByID")
+//DELETE ID FOR HANDLING OTHER PROCESS
+@GetMapping(value="/college/single/delete/{id}")
+public ResponseEntity<String> deleteSingleCollegeByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : deleteSingleCollegeByID()---ID : "+id);
+	
+	
+	ResponseEntity<String> responseEntity =
+	        restTemplate.exchange(DELETE_SINGLE_COLLEGE_URL+id,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<String>() {
+	            });
+	
+	
+	
+	return responseEntity;
+
+
+}
+//HYSTRIX fallbackCollegesDELETEByID
+public ResponseEntity<String>fallbackCollegesDELETEByID(@PathVariable("id") Long id) {
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackCollegesDELETEByID()---ID : "+id);
+	College college=collegeRepository.getById(id);
+	collegeRepository.delete(college);;
+	LOGGER.info("FROM class GetProfilePhotoManageController,method : fallbackCollegesDELETEByID()--DELETE--ID : "+id);
 	return ResponseEntity.ok().body("success delete");
 }
 
