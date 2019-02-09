@@ -14,9 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.renu.about.config.RibbonConfiguration;
 import com.renu.about.models.College;
+import com.renu.about.models.HighSchool;
 import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
 import com.renu.about.repositories.CollegeRepository;
+import com.renu.about.repositories.HighSchoolRepository;
 import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
@@ -47,6 +49,12 @@ private static final String PROFESSIONAL_SKILLS_ADD_URL="http://about-service/ab
 CollegeRepository collegeRepository;
 //COLLEGE ADD URL
 private static final String COLLEGE_ADD_URL="http://about-service/aboutService-post/college/add";
+//------------------------------------------------------------------------------------------------------
+//REPOSITORY
+@Autowired
+HighSchoolRepository highSchoolRepository;
+//COLLEGE ADD URL
+private static final String HIGHSCHOOL_ADD_URL="http://about-service/aboutService-post/highSchool/add";
 //-------------------------------------------------------------------------------------------------------------------
 	// WORKPLACE ADD
 @HystrixCommand(fallbackMethod="workplaceAddFallBack")
@@ -101,6 +109,27 @@ public ResponseEntity<College>collegeAddFallBack(@RequestBody College college){
 	return ResponseEntity.ok().body(college);
 }
 
+
+
+
+
+
+//-------------------------------------------------------------------------------------------------------------------
+	// HIGH SCHOOL ADD
+@HystrixCommand(fallbackMethod="highSchoolAddFallBack")
+@PostMapping(value="/highSchool/add")
+public ResponseEntity<HighSchool>addHighSchool(@RequestBody HighSchool highSchool){
+	LOGGER.info("From class AboutPOSTController,method : addHighSchool()--ENTER--");
+	HighSchool highSchool2=restTemplate.postForObject(HIGHSCHOOL_ADD_URL,highSchool,HighSchool.class);
+	return ResponseEntity.ok().body(highSchool2);
+}
+
+//HYSTRIX HIGH SCHOOL ADD
+public ResponseEntity<HighSchool>highSchoolAddFallBack(@RequestBody HighSchool highSchool){
+	LOGGER.info("From class AboutPOSTController,method : hgighSchoolAddFallBack()--ENTER--");
+	highSchoolRepository.save(highSchool);
+	return ResponseEntity.ok().body(highSchool);
+}
 
 
 

@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.renu.about.models.College;
+import com.renu.about.models.HighSchool;
 import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
 import com.renu.about.repositories.CollegeRepository;
+import com.renu.about.repositories.HighSchoolRepository;
 import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
@@ -30,6 +32,9 @@ ProfessionalSkillRepository professionalSkillRepository;
 //---------------------------------------------------------------------------------------------------------
 @Autowired
 CollegeRepository collegeRepository;
+//---------------------------------------------------------------------------------------------------------
+@Autowired
+HighSchoolRepository highSchoolRepository;
 //--------------------------------------------------------------------------------------------------------
 @PutMapping(value="/workplace/update/{id}")
 public ResponseEntity<String>updateWorkplaceById(@PathVariable Long id,@RequestBody Workplace workplace){
@@ -65,6 +70,19 @@ College college2=collegeRepository.getById(id);
 college2.setCollege(college.getCollege());
 collegeRepository.save(college2);
 LOGGER.info("From class AboutUPDATEController,method : updateCollegeById()---UPDATED--ID : "+id);
+return ResponseEntity.ok().body("success update !!!");
+
+
+
+}
+//--------------------------------------------------------------------------------------------------------
+@PutMapping(value="/highSchool/update/{id}")
+public ResponseEntity<String>updateHighSchoolById(@PathVariable Long id,@RequestBody HighSchool highSchool){
+	LOGGER.info("From class AboutUPDATEController,method : updateHighSchoolById()---ENTER--ID : "+id);
+HighSchool highSchool2=highSchoolRepository.getById(id);
+highSchool2.setHighSchool(highSchool.getHighSchool());
+highSchoolRepository.save(highSchool2);
+LOGGER.info("From class AboutUPDATEController,method : updateHighSchoolById()---UPDATED--ID : "+id);
 return ResponseEntity.ok().body("success update !!!");
 
 

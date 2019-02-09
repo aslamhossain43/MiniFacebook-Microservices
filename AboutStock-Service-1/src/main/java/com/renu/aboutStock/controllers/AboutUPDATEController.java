@@ -13,9 +13,11 @@ import org.springframework.web.client.RestTemplate;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.renu.about.models.College;
+import com.renu.about.models.HighSchool;
 import com.renu.about.models.ProfessionalSkill;
 import com.renu.about.models.Workplace;
 import com.renu.about.repositories.CollegeRepository;
+import com.renu.about.repositories.HighSchoolRepository;
 import com.renu.about.repositories.ProfessionalSkillRepository;
 import com.renu.about.repositories.WorkPlaceRepository;
 
@@ -35,6 +37,9 @@ ProfessionalSkillRepository professionalSkillRepository;
 //--------------------------------------------------------------------------------------------------------------
 @Autowired
 CollegeRepository collegeRepository;
+//--------------------------------------------------------------------------------------------------------------
+@Autowired
+HighSchoolRepository highSchoolRepository;
 //----------------------------------------------------------------------------------------------------------------
 //UPDATE WORKPLACE BY URL
 private static final String UPDATE_SINGLE_WORKPLACE_URL="http://about-service/about-update/workplace/update/";
@@ -44,6 +49,9 @@ private static final String UPDATE_SINGLE_PROFESSIONAL_SKILLS_URL="http://about-
 //----------------------------------------------------------------------------------------------------------------
 //UPDATE COLLEGE BY URL
 private static final String UPDATE_SINGLE_COLLEGE_URL="http://about-service/about-update/college/update/";
+//----------------------------------------------------------------------------------------------------------------
+//UPDATE HIGH SCHOOL BY URL
+private static final String UPDATE_SINGLE_HIGHSCHOOL_URL="http://about-service/about-update/highSchool/update/";
 
 //----------------------------------------------------------------------------------------------------------------
 
@@ -119,6 +127,32 @@ public ResponseEntity<String>fallbackCollegeUPDATEByID(@PathVariable("id") Long 
 	college2.setCollege(college.getCollege());
 collegeRepository.save(college2);
 	LOGGER.info("FROM class AboutUPDATEController,method : fallbackCollegeUPDATEByID()--UPDATED--ID : "+id);
+	return ResponseEntity.ok().body("success update");
+}
+
+
+//----------------------------------------------------------------------------------------------------------------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackHighSchoolUPDATEByID")
+//UPDATE HIGH SCHOOL BY ID
+@PutMapping(value="/highSchool/update/{id}")
+public ResponseEntity<String> updateSingleHighSchoolByID(@PathVariable("id") Long id,@RequestBody HighSchool highSchool) {
+	LOGGER.info("FROM class AboutUPDATEController,method :  updateSingleHighSchoolByID()---ID : "+id);
+	restTemplate.put(UPDATE_SINGLE_HIGHSCHOOL_URL+id, highSchool);
+	
+	
+	return ResponseEntity.ok().body("success update");
+
+
+}
+//HYSTRIX fallbackHighSchoolUPDATEByID
+public ResponseEntity<String>fallbackHighSchoolUPDATEByID(@PathVariable("id") Long id,@RequestBody HighSchool highSchool) {
+	LOGGER.info("FROM class AboutUPDATEController,method : fallbackHighSchoolUPDATEByID()---ID : "+id);
+	HighSchool highSchool2=highSchoolRepository.getById(id);
+	highSchool2.setHighSchool(highSchool.getHighSchool());
+highSchoolRepository.save(highSchool2);
+	LOGGER.info("FROM class AboutUPDATEController,method : fallbackHighSchoolUPDATEByID()--UPDATED--ID : "+id);
 	return ResponseEntity.ok().body("success update");
 }
 
