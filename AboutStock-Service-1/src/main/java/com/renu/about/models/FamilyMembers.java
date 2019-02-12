@@ -12,7 +12,7 @@ public class FamilyMembers extends TimeEntity<Long> {
 	private Long id;
 	private String uid;
 	private String familyMembers;
-	
+	private String relation;
 	public FamilyMembers() {}
 
 	@Override
@@ -39,6 +39,14 @@ public class FamilyMembers extends TimeEntity<Long> {
 
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+
+	public String getRelation() {
+		return relation;
+	}
+
+	public void setRelation(String relation) {
+		this.relation = relation;
 	}
 	
 	

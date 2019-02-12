@@ -5,6 +5,7 @@ public class FamilyMembers {
 	private Long id;
 	private String uid;
 	private String familyMembers;
+	private String relation;
     private String createdDate;
     private String lastModifiedDate;
 
@@ -49,6 +50,14 @@ public class FamilyMembers {
 
 	public void setLastModifiedDate(String lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	public String getRelation() {
+		return relation;
+	}
+
+	public void setRelation(String relation) {
+		this.relation = relation;
 	}
 
 	

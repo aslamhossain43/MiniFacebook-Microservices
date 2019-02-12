@@ -231,6 +231,7 @@ public ResponseEntity<String>updatefamilyMembersById(@PathVariable Long id,@Requ
 	LOGGER.info("From class AboutUPDATEController,method : updatefamilyMembers()---ENTER--ID : "+id);
 FamilyMembers familyMembers2=familyMembersRepository.getById(id);
 familyMembers2.setFamilyMembers(familyMembers.getFamilyMembers());
+familyMembers2.setRelation(familyMembers.getRelation());
 familyMembersRepository.save(familyMembers2);
 LOGGER.info("From class AboutUPDATEController,method : updatefamilyMembersById()---UPDATED--ID : "+id);
 return ResponseEntity.ok().body("success update !!!");

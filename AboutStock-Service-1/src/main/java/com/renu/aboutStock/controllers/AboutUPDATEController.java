@@ -421,6 +421,7 @@ public ResponseEntity<String>fallbackfamilyMembersUPDATEByID(@PathVariable("id")
 	LOGGER.info("FROM class AboutUPDATEController,method : fallbackfamilyMembersUPDATEByID()---ID : "+id);
 	FamilyMembers familyMembers2=familyMembersRepository.getById(id);
 	familyMembers2.setFamilyMembers(familyMembers.getFamilyMembers());
+	familyMembers2.setRelation(familyMembers.getRelation());
 familyMembersRepository.save(familyMembers2);
 	LOGGER.info("FROM class AboutUPDATEController,method : fallbackfamilyMembersUPDATEByID()--UPDATED--ID : "+id);
 	return ResponseEntity.ok().body("success update");
