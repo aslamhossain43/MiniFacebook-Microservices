@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 @Entity
-public class ProfilePhotosEntity extends BaseProfilePhotosEntity<Long> {
+public class ProfilePhotosEntity extends TimeEntity<Long> {
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
 private Long id;
