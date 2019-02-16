@@ -52,8 +52,24 @@ public ResponseEntity<String>fallBackAddLoginInformation(@RequestBody LoginInfor
 	LOGGER.info("From class LoginInformationController,method: fallBackAddLoginInformation()-----USER_NAME : "+loginInformationEntity.getUserName());
 	LOGGER.info("From class LoginInformationController,method: fallBackAddLoginInformation()-----EMAIL : "+loginInformationEntity.getEmail());
 	LOGGER.info("From class LoginInformationController,method: fallBackAddLoginInformation()-----PHOTO_URL : "+loginInformationEntity.getPhotoUrl());
- 		loginInformationRepository.save(loginInformationEntity);
-	
+	  LoginInformationEntity getByUID=loginInformationRepository.getByUid(loginInformationEntity.getUid());
+	  if (getByUID==null) {
+		  if (loginInformationEntity.getUid()!=null) {
+				
+			  loginInformationRepository.save(loginInformationEntity);
+			  }
+	} else {
+		loginInformationEntity.setId(getByUID.getId());
+		loginInformationEntity.setUid(getByUID.getUid());
+		loginInformationEntity.setEmail(getByUID.getEmail());
+		loginInformationEntity.setPhotoUrl(getByUID.getPhotoUrl());
+		loginInformationEntity.setUserName(getByUID.getUserName());
+		loginInformationEntity.setLastActivitiesTime(loginInformationEntity.getLastModifiedDate());
+		loginInformationEntity.setCreatedDate(getByUID.getCreatedDate());
+		
+	loginInformationRepository.save(loginInformationEntity);	
+	}
+	    
 	return ResponseEntity.ok().body("success");
 	
 	
