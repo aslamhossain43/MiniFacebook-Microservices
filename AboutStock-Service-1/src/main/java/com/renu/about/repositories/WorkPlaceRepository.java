@@ -11,9 +11,13 @@ import com.renu.about.models.Workplace;
 
 public interface WorkPlaceRepository extends JpaRepository<Workplace,Long>,JpaSpecificationExecutor<Workplace> {
 Workplace getById(Long id);
-// GET BY UID
+// GET ALL BY UID
 static final String getAllWorkplacesByUID ="FROM Workplace WHERE uid=:uid ORDER BY id DESC";
 @Query(getAllWorkplacesByUID)
 public List<Workplace>getAllWorkplacesByUID(@Param("uid")String uid);
+//GET ALL
+static final String getAllWorkplaces ="FROM Workplace ORDER BY id DESC";
+@Query(getAllWorkplaces)
+public List<Workplace>getAllWorkplaces();
 
 }

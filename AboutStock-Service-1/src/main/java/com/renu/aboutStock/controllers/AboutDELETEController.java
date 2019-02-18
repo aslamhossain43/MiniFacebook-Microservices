@@ -72,7 +72,7 @@ CurrentCityRepository currentCityRepository;
 @Autowired
 HomeTownRepository homeTownRepository;
 //---------------------------------------------------------------------------------------------------
-//OTHER PLACES LIVED REPOSITORY
+//OTHER PLACES REPOSITORY
 @Autowired
 OtherPlacesLivedRepository otherPlacesLivedRepository;
 //---------------------------------------------------------------------------------------------------
@@ -343,7 +343,9 @@ public ResponseEntity<String> deleteSingleotherPlacesLivedByID(@PathVariable("id
 //HYSTRIX fallbackotherPlacesLivedDELETEByID
 public ResponseEntity<String>fallbackotherPlacesLivedDELETEByID(@PathVariable("id") Long id) {
 	LOGGER.info("FROM class AboutDELETEController,method : fallbackotherPlacesLivedDELETEByID()---ID : "+id);
-OtherPlacesLived otherPlacesLived=otherPlacesLivedRepository.getById(id);
+	OtherPlacesLived otherPlacesLived=otherPlacesLivedRepository.getById(id);
+LOGGER.info("FROM class AboutDELETEController,method : fallbackotherPlacesLivedDELETEByID()---getting-otherplaces-- : "+otherPlacesLived.getOtherPlacesLived());
+
 	otherPlacesLivedRepository.delete(otherPlacesLived);
 	LOGGER.info("FROM class AboutDELETEController,method : fallbackotherPlacesLivedDELETEByID()--DELETE--ID : "+id);
 	return ResponseEntity.ok().body("success delete");

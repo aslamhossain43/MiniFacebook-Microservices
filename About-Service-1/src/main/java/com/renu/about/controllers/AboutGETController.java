@@ -82,7 +82,7 @@ FamilyMembersRepository familyMembersRepository;
 @Autowired
 FavoriteQuotesRepository favoriteQuotesRepository;
 //---------------------------------------------------------------------------------------------------------------
-// GET WORKPLACES ALL
+// GET WORKPLACES ALL BY UID
 @GetMapping(value="/workplace/getAll/{uid}")
 public ResponseEntity<List<Workplace>>getAllWorkplacesByUID(@PathVariable String uid){
 	LOGGER.info("From class AboutGETController,method : getAllWorkplacesByUID()--ENTER--UID : "+uid);
@@ -290,5 +290,12 @@ public ResponseEntity<FavoriteQoutes>getSinglefavoriteQuotesByID(@PathVariable("
 	FavoriteQoutes favoriteQoutes=favoriteQuotesRepository.getById(id);
 return	ResponseEntity.ok().body(favoriteQoutes);
 }
-
+//---------------------------------------------------------------------------------------------------------------
+//GET WORKPLACES ALL
+@GetMapping(value="/workplace/getAll")
+public ResponseEntity<List<Workplace>>getAllWorkplaces(){
+	LOGGER.info("From class AboutGETController,method : getAllWorkplaces()--ENTER--");
+	List<Workplace>workplaces=workPlaceRepository.getAllWorkplaces();
+return	ResponseEntity.ok().body(workplaces);
+}
 }

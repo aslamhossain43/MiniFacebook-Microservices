@@ -103,8 +103,11 @@ FamilyMembersRepository familyMembersRepository;
 FavoriteQuotesRepository favoriteQuotesRepository;
 //-------------------------------------------------------------------------------------------------
 //GET ALL WORKPLACES URL
+private static final String GET_ALL_WORKPLACES="http://about-service/about-get/workplace/getAll";
+//GET ALL WORKPLACES BY UID URL
 private static final String GET_ALL_WORKPLACES_URL="http://about-service/about-get/workplace/getAll/";
-//GET WORKPLACE BY URL
+
+//GET WORKPLACE BY id URL
 private static final String GET_SINGLE_WORKPLACE_URL="http://about-service/about-get/workplace/single/";
 
 //-------------------------------------------------------------------------------------------------
@@ -903,5 +906,41 @@ public ResponseEntity<FavoriteQoutes>fallbackfavoriteQuotesGETAllGETByID(@PathVa
 	FavoriteQoutes favoriteQoutes =favoriteQuotesRepository.getById(id);
 	return ResponseEntity.ok().body(favoriteQoutes);
 }
+
+
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------------
+
+//HYSTRIX
+@HystrixCommand(fallbackMethod = "fallbackForWorkplaceGETAll")
+//GET WORKPLACES
+@GetMapping(value="/workplace/getAll")
+public ResponseEntity<List<Workplace>> getAllWorkplaces() {
+	LOGGER.info("FROM class AboutGETController,method : getAllWorkplaces()---ENTER----");
+	
+	
+	ResponseEntity<List<Workplace>> profilePhotosEntities =
+	        restTemplate.exchange(GET_ALL_WORKPLACES,
+	            HttpMethod.GET, null, new ParameterizedTypeReference<List<Workplace>>() {
+	            });
+	
+	
+	
+	return profilePhotosEntities;
+
+
+}
+//HYSTRIX FOR fallbackForWorkplaceGETAll
+public ResponseEntity<List<Workplace>> fallbackForWorkplaceGETAll() {
+	LOGGER.info("FROM class AboutGETController,method : fallbackForWorkplaceGETAll()--ENTER-----");
+	List<Workplace> workplaces=workPlaceRepository.getAllWorkplaces();
+	return ResponseEntity.ok().body(workplaces);
+}
+
+
+
 
 }

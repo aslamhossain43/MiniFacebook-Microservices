@@ -176,13 +176,12 @@ public class AboutDELETEController {
 		public ResponseEntity<String> deleteSingleotherPlacesLivedByID(@PathVariable("id") Long id) {
 			LOGGER.info("From class AboutDELETEController,method : deleteSingleotherPlacesLivedByID()--ENTER--ID : " + id);
 			OtherPlacesLived otherPlacesLived=otherPlacesLivedRepository.getById(id);
-			otherPlacesLivedRepository.delete(otherPlacesLived);;
+			otherPlacesLivedRepository.delete(otherPlacesLived);
 			LOGGER.info("From class AboutDELETEController,method : deleteSingleotherPlacesLivedByID()--DELETED--ID : " + id);
 
 			return ResponseEntity.ok().body("SuccessCallback delete");
 		}
 
-		
 		// ------------------------------------------------------------------------------------------------------------------
 
 		// DELETE CONTACT INFORMATION ID

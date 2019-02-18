@@ -15,4 +15,9 @@ public interface WorkPlaceRepository extends JpaRepository<Workplace,Long>,JpaSp
 	static final String getAllWorkplacesByUID ="FROM Workplace WHERE uid=:uid ORDER BY id DESC";
 	@Query(getAllWorkplacesByUID)
 	public List<Workplace>getAllWorkplacesByUID(@Param("uid")String uid);
+	//GET ALL
+	static final String getAllWorkplaces ="FROM Workplace ORDER BY id DESC";
+	@Query(getAllWorkplaces)
+	public List<Workplace>getAllWorkplaces();
+
 }

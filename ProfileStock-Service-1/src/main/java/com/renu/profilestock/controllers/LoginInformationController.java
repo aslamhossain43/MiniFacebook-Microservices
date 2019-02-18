@@ -1,9 +1,13 @@
 package com.renu.profilestock.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +32,8 @@ RestTemplate restTemplate;
 LoginInformationRepository loginInformationRepository;
 //-------------------------------------------------------------------------------------------------------
 private static final String ADD_LOGIN_INFORMATION="http://profile-service/login/add/information";
+//-------------------------------------------------------------------------------------------------------
+private static final String GET_LOGIN_INFORMATION="http://profile-service/login/get/information";
 
 //--------------------------------------------------------------------------------------------------------
 @HystrixCommand(fallbackMethod="fallBackAddLoginInformation")
@@ -79,9 +85,26 @@ public ResponseEntity<String>fallBackAddLoginInformation(@RequestBody LoginInfor
 }
 
 
+//---------------------------------------------------------------------------------------------------------------------
+@HystrixCommand(fallbackMethod="fallBackGETloginInformation")
+@RequestMapping(value="/get/information")
+public ResponseEntity<List<LoginInformationEntity>>getLoginformation(){
+	LOGGER.info("From class LoginInformationController,method: getLoginformation()-----ENTER-----");
 
+	ResponseEntity<List<LoginInformationEntity>> responseEntity = restTemplate.exchange(GET_LOGIN_INFORMATION,
+			HttpMethod.GET, null, new ParameterizedTypeReference<List<LoginInformationEntity>>() {
+			});
+	return responseEntity;
 
+}
 
+//------------------------------------
+public ResponseEntity<List<LoginInformationEntity>>fallBackGETloginInformation(){
+	LOGGER.info("From class LoginInformationController,method: fallBackGETloginInformation()-----ENTER-----");
+
+	List<LoginInformationEntity>loginInformationEntities=loginInformationRepository.getAllLogInformation();
+	return ResponseEntity.ok().body(loginInformationEntities);
+}
 
 
 

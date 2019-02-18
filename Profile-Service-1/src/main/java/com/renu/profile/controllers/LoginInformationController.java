@@ -1,5 +1,7 @@
 package com.renu.profile.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,4 +53,23 @@ public ResponseEntity<String>addLoginInformation(@RequestBody LoginInformationEn
 	
 	
 }
+//--------------------------------------------------------------------------------------------------------------------
+@RequestMapping(value="/get/information")
+public ResponseEntity<List<LoginInformationEntity>>getLoginformation(){
+	LOGGER.info("From class LoginInformationController,method: getLoginformation()-----ENTER-----");
+List<LoginInformationEntity>loginInformationEntities=loginInformationRepository.getAllLogInformation();
+return ResponseEntity.ok().body(loginInformationEntities);
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
 }

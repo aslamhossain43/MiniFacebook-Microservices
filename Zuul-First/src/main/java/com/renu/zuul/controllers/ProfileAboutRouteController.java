@@ -36,7 +36,7 @@ public class ProfileAboutRouteController {
 	@Autowired
 	RestTemplate restTemplate;
 	// -----------------------------------------------------------------------------------------------------------------
-	// WORKPLACE ADD URL
+	// WORKPLACE URL
 	private static final String WORKPLACE_ADD_URL = "http://aboutStock-service/aboutStock-post/workplace/add";
 	private static final String GET_ALL_WORKPLACES_URL = "http://aboutStock-service/aboutStock-get/workplace/getAll/";
 	private static final String GET_SINGLE_WORKPLACE_URL = "http://aboutStock-service/aboutStock-get/workplace/single/";
@@ -44,14 +44,14 @@ public class ProfileAboutRouteController {
 	private static final String DELETE_SINGLE_WORKPLACE_URL = "http://aboutStock-service/aboutStock-delete/workplace/single/delete/";
 
 	// -----------------------------------------------------------------------------------------------------------------------
-	// PROFESSIONAL SKILLS ADD URL
+	// PROFESSIONAL SKILLS URL
 	private static final String PROFESSIONAL_SKILLS_ADD_URL = "http://aboutStock-service/aboutStock-post/professionalSkills/add";
 	private static final String GET_ALL_PROFESSIONAL_SKILLS_URL = "http://aboutStock-service/aboutStock-get/professionalSkills/getAll/";
 	private static final String GET_SINGLE_PROFESSIONAL_SKILLS_URL = "http://aboutStock-service/aboutStock-get/professionalSkills/single/";
 	private static final String UPDATE_SINGLE_PROFESSIONAL_SKILLS_URL = "http://aboutStock-service/aboutStock-update/professionalSkills/update/";
 	private static final String DELETE_SINGLE_PROFESSIONAL_SKILLS_URL = "http://aboutStock-service/aboutStock-delete/professionalSkills/single/delete/";
 	// --------------------------------------------------------------------------------------------------------------------
-	// COLLEGE ADD URL
+	// COLLEGE URL
 	private static final String COLLEGE_ADD_URL = "http://aboutStock-service/aboutStock-post/college/add";
 	private static final String GET_ALL_COLLEGE_URL = "http://aboutStock-service/aboutStock-get/college/getAll/";
 	private static final String GET_SINGLE_COLLEGE_URL = "http://aboutStock-service/aboutStock-get/college/single/";
@@ -60,7 +60,7 @@ public class ProfileAboutRouteController {
 
 	
 	// --------------------------------------------------------------------------------------------------------------------
-		// HIGH SCHOOL ADD URL
+		// HIGH SCHOOL  URL
 		private static final String HIGHSCHOOL_ADD_URL = "http://aboutStock-service/aboutStock-post/highSchool/add";
 		private static final String GET_ALL_HIGHSCHOOL_URL = "http://aboutStock-service/aboutStock-get/highSchool/getAll/";
 		private static final String GET_SINGLE_HIGHSCHOOL_URL = "http://aboutStock-service/aboutStock-get/highSchool/single/";
@@ -68,7 +68,7 @@ public class ProfileAboutRouteController {
 		private static final String DELETE_SINGLE_HIGHSCHOOL_URL = "http://aboutStock-service/aboutStock-delete/highSchool/single/delete/";
 
 		// --------------------------------------------------------------------------------------------------------------------
-		// CURRENT CITY ADD URL
+		// CURRENT CITY  URL
 		private static final String CURRENT_CITY_ADD_URL = "http://aboutStock-service/aboutStock-post/currentCity/add";
 		private static final String GET_ALL_CURRENT_CITY_URL = "http://aboutStock-service/aboutStock-get/currentCity/getAll/";
 		private static final String GET_SINGLE_CURRENT_CITY_URL = "http://aboutStock-service/aboutStock-get/currentCity/single/";
@@ -77,7 +77,7 @@ public class ProfileAboutRouteController {
 		
 		private static final String DELETE_SINGLE_CURRENT_CITY_URL = "http://aboutStock-service/aboutStock-delete/currentCity/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
-		// HOME TOWN ADD URL
+		// HOME TOWN  URL
 		private static final String HOMETOWN_ADD_URL = "http://aboutStock-service/aboutStock-post/homeTown/add";
 		private static final String GET_ALL_HOMETOWN_URL = "http://aboutStock-service/aboutStock-get/homeTown/getAll/";
 		private static final String GET_SINGLE_HOMETOWN_URL = "http://aboutStock-service/aboutStock-get/homeTown/single/";
@@ -86,7 +86,7 @@ public class ProfileAboutRouteController {
 		
 		private static final String DELETE_SINGLE_HOMETOWN_URL = "http://aboutStock-service/aboutStock-delete/homeTown/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
-		// OTHER PLACES LIVED ADD URL
+		// OTHER PLACES LIVED  URL
 		private static final String OTHERPLACES_LIVED_ADD_URL = "http://aboutStock-service/aboutStock-post/otherPlacesLived/add";
 		private static final String GET_ALL_OTHERPLACES_LIVED_URL = "http://aboutStock-service/aboutStock-get/otherPlacesLived/getAll/";
 		private static final String GET_SINGLE_OTHERPLACES_LIVED_URL = "http://aboutStock-service/aboutStock-get/otherPlacesLived/single/";
@@ -95,7 +95,7 @@ public class ProfileAboutRouteController {
 		
 		private static final String DELETE_SINGLE_OTHERPLACES_LIVED_URL = "http://aboutStock-service/aboutStock-delete/otherPlacesLived/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
-		// CONTACT INFORMATION ADD URL
+		// CONTACT INFORMATION  URL
 		private static final String CONTACT_INFORMATION_ADD_URL = "http://aboutStock-service/aboutStock-post/contactInformation/add";
 		private static final String GET_ALL_CONTACT_INFORMATION_URL = "http://aboutStock-service/aboutStock-get/contactInformation/getAll/";
 		private static final String GET_SINGLE_CONTACT_INFORMATION_URL = "http://aboutStock-service/aboutStock-get/contactInformation/single/";
@@ -105,7 +105,7 @@ public class ProfileAboutRouteController {
 		private static final String DELETE_SINGLE_CONTACT_INFORMATION_URL = "http://aboutStock-service/aboutStock-delete/contactInformation/single/delete/";
 	
 		// --------------------------------------------------------------------------------------------------------------------
-		// WEBSITE AND SOCIAL LINK ADD URL
+		// WEBSITE AND SOCIAL LINK  URL
 		private static final String WEBSITE_AND_SOCIAL_LINK_ADD_URL = "http://aboutStock-service/aboutStock-post/webSiteAndSocialLink/add";
 		private static final String GET_ALL_WEBSITE_AND_SOCIAL_LINK_URL = "http://aboutStock-service/aboutStock-get/webSiteAndSocialLink/getAll/";
 		private static final String GET_SINGLE_WEBSITE_AND_SOCIAL_LINK_URL = "http://aboutStock-service/aboutStock-get/webSiteAndSocialLink/single/";
@@ -114,7 +114,7 @@ public class ProfileAboutRouteController {
 		
 		private static final String DELETE_SINGLE_WEBSITE_AND_SOCIAL_LINK_URL = "http://aboutStock-service/aboutStock-delete/webSiteAndSocialLink/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
-		// BASIC INFORMATION ADD URL
+		// BASIC INFORMATION  URL
 		private static final String BASIC_INFORMATION_ADD_URL = "http://aboutStock-service/aboutStock-post/basicInformation/add";
 		private static final String GET_ALL_BASIC_INFORMATION_URL = "http://aboutStock-service/aboutStock-get/basicInformation/getAll/";
 		private static final String GET_SINGLE_BASIC_INFORMATION_URL = "http://aboutStock-service/aboutStock-get/basicInformation/single/";
@@ -123,7 +123,7 @@ public class ProfileAboutRouteController {
 		
 		private static final String DELETE_SINGLE_BASIC_INFORMATION_URL = "http://aboutStock-service/aboutStock-delete/basicInformation/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
-		// RELATION SHIP ADD URL
+		// RELATION SHIP  URL
 		private static final String RELATIONSHIP_ADD_URL = "http://aboutStock-service/aboutStock-post/relationShip/add";
 		private static final String GET_ALL_RELATIONSHIP_URL = "http://aboutStock-service/aboutStock-get/relationShip/getAll/";
 		private static final String GET_SINGLE_RELATIONSHIP_URL = "http://aboutStock-service/aboutStock-get/relationShip/single/";
@@ -132,7 +132,7 @@ public class ProfileAboutRouteController {
 		
 		private static final String DELETE_SINGLE_RELATIONSHIP_URL = "http://aboutStock-service/aboutStock-delete/relationShip/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
-		// FAMILY MEMBERS ADD URL
+		// FAMILY MEMBERS  URL
 		private static final String FAMILYMEMBERS_ADD_URL = "http://aboutStock-service/aboutStock-post/familyMembers/add";
 		private static final String GET_ALL_FAMILYMEMBERS_URL = "http://aboutStock-service/aboutStock-get/familyMembers/getAll/";
 		private static final String GET_SINGLE_FAMILYMEMBERS_URL = "http://aboutStock-service/aboutStock-get/familyMembers/single/";
@@ -141,7 +141,7 @@ public class ProfileAboutRouteController {
 		
 		private static final String DELETE_SINGLE_FAMILYMEMBERS_URL = "http://aboutStock-service/aboutStock-delete/familyMembers/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
-		// FAVORITE QUOTES ADD URL
+		// FAVORITE QUOTES  URL
 		private static final String FAVORITEQUOTES_ADD_URL = "http://aboutStock-service/aboutStock-post/favoriteQuotes/add";
 		private static final String GET_ALL_FAVORITEQUOTES_URL = "http://aboutStock-service/aboutStock-get/favoriteQuotes/getAll/";
 		private static final String GET_SINGLE_FAVORITEQUOTES_URL = "http://aboutStock-service/aboutStock-get/favoriteQuotes/single/";
