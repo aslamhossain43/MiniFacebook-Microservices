@@ -1,9 +1,13 @@
 package com.renu.friendstock.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +30,8 @@ private static final Logger LOGGER=LoggerFactory.getLogger(AddFriendsDataControl
 RestTemplate restTemplate;
 //----------------------------------------------------------------------------------------------------------------
 private static final String ADD_SMALL_DATA="http://friends-service/friends/smalldata/add";
+private static final String GET_ALL_ADD_FRIENDS_DATA="http://friends-service/friends/smalldata/getAll";
+
 @Autowired
 AddFriendsDataRepository addFriendsDataRepository;
 //----------------------------------------------------------------------------------------------------------------
@@ -210,5 +216,36 @@ getByUid.setEmail(getByUid.getEmail());
 	
 	return ResponseEntity.ok().body(addFriendsData);
 }
+//--------------------------------------------------------------------------------------------------------------------
+@HystrixCommand(fallbackMethod="fallBackgetAllFriendsData")
+@RequestMapping(value="/getAll")
+public ResponseEntity<List<AddFriendsData>>getAllFriendsData(){
+	LOGGER.info("From class AddFriendsDataController ,method : getAllFriendsData()---ENTER------");
+	ResponseEntity<List<AddFriendsData>> addFriendsData = restTemplate.exchange(GET_ALL_ADD_FRIENDS_DATA, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<AddFriendsData>>() {
+			});
+return addFriendsData;
+	
+	
+}
+
+public ResponseEntity<List<AddFriendsData>>fallBackgetAllFriendsData(){
+	LOGGER.info("From class AddFriendsDataController ,method : fallBackgetAllFriendsData()---ENTER------");
+	List<AddFriendsData>addFriendsDatas=addFriendsDataRepository.findAll();
+	LOGGER.info("From class AddFriendsDataController ,method : fallBackgetAllFriendsData()---AFTER GETTING ALL DATA------");
+	return ResponseEntity.ok().body(addFriendsDatas);
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
 
 }

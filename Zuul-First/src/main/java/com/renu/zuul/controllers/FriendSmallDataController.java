@@ -1,9 +1,13 @@
 package com.renu.zuul.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +27,8 @@ public class FriendSmallDataController {
 	RestTemplate restTemplate;
 	// ---------------------------------------------------------------------------------------------------------
 	private static final String ADD_SMALL_DATA_FRIENDS = "http://friendStock-service/friends/smalldata/add";
+	private static final String GET_ALL_SMALL_DATA="http://friendStock-service/friends/smalldata/getAll";
+
 	// ---------------------------------------------------------------------------------------------------------
 @RequestMapping(value="/friends/smalldata/add")
 public ResponseEntity<?>addSmallDataForFriends(@RequestBody AddFriendsData addFriendsData){
@@ -34,8 +40,16 @@ public ResponseEntity<?>addSmallDataForFriends(@RequestBody AddFriendsData addFr
 	
 }
 
+@RequestMapping(value="/friends/smalldata/getAll")
+public ResponseEntity<List<?>>getAllSmallDataForFriends(){
+	LOGGER.info("From class FriendSmallDataController,method : getAllSmallDataForFriends()----ENTER-----");
+	ResponseEntity<List<?>> responseEntity = restTemplate.exchange(GET_ALL_SMALL_DATA, HttpMethod.GET, null,
+			new ParameterizedTypeReference<List<?>>() {
+			});
+return responseEntity;
 
 
+}
 
 
 
