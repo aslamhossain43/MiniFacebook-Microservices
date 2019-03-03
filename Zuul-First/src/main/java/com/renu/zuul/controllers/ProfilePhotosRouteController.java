@@ -26,21 +26,21 @@ import com.renu.zuul.config.RibbonConfiguration;
 public class ProfilePhotosRouteController {
 private static final Logger LOGGER=LoggerFactory.getLogger(ProfilePhotosRouteController.class);
 //PHOTO ALL GET URL
-	private static final String GET_PROFILE_PHOTO_INFORMATION="http://profileStock-service/photo/uid/";
+	private static final String GET_PROFILE_PHOTO_INFORMATION="http://minifacebookstock-service/photo/uid/";
 
 	// LAST PHOTO GET URL
-		private static final String GET_LAST_PROFILE_PHOTO_INFORMATION="http://profileStock-service/photo/uid/last/";
+		private static final String GET_LAST_PROFILE_PHOTO_INFORMATION="http://minifacebookstock-service/photo/uid/last/";
 	
 	//PHOTO GET BY ALL PHOTOS PHOTO CODE
-		private static final String GET_PROFILE_ALL_PHOTOS="http://profileStock-service/photo/getProfilePhoto/";
+		private static final String GET_PROFILE_ALL_PHOTOS="http://minifacebookstock-service/photo/getProfilePhoto/";
 	
 		// SINGLE PHOTO GET BU UID
-				private static final String GET_PROFILE_SINGLE_PHOTO="http://profileStock-service/photo/getProfilePhoto/single/";
+				private static final String GET_PROFILE_SINGLE_PHOTO="http://minifacebookstock-service/photo/getProfilePhoto/single/";
 			
 		// PHOTO ADD URL
-		private static final String PHOTO_ADD_URL="http://profileStock-service/image/addImage";
+		private static final String PHOTO_ADD_URL="http://minifacebookstock-service/image/addImage";
 		//DELETE SINGLE PROFILE PHOTO
-		private static final String DELETE_SINGLE_PROFILE_PHOTO_URL="http://profileStock-service/delete/profilePhoto/single/";
+		private static final String DELETE_SINGLE_PROFILE_PHOTO_URL="http://minifacebookstock-service/delete/profilePhoto/single/";
 	//FOR RIBBON
 	@Autowired
 	RestTemplate restTemplate;

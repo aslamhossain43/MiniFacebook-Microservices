@@ -24,9 +24,9 @@ public class CombinationForFriendsController {
 	@Autowired
 	RestTemplate restTemplate;
 	// ---------------------------------------------------------------------------------------------------------
-	private static final String GET_ALL_WORKPLACES = "http://combination-service/get/about/workplace/getAll";
+	private static final String GET_ALL_WORKPLACES = "http://minifacebookstock-service/get/about/workplace/getAll";
 	// ---------------------------------------------------------------------------------------------------------
-	private static final String GET_ALL_LOGINFORMATION = "http://combination-service/get/photo/loginformation/getAll";
+	private static final String GET_ALL_LOGINFORMATION = "http://minifacebookstock-service/get/photo/loginformation/getAll";
 
 	// ----------------------------------------------------------------------------------------------------------------
 	@RequestMapping(value = "/get/workplaces")

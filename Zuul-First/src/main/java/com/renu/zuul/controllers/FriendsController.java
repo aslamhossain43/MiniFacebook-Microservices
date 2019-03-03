@@ -24,8 +24,8 @@ private static final Logger LOGGER=LoggerFactory.getLogger(FriendsController.cla
 @Autowired
 RestTemplate restTemplate;
 //----------------------------------------------------------------------------------------------------------------
-private static final String ADD_FRIENDS_DATA="http://friendStock-service/friends/add";
-private static final String GET_FROM_AGREE="http://friendStock-service/friends/getFromAgree";
+private static final String ADD_FRIENDS_DATA="http://minifacebookstock-service/friends/add";
+private static final String GET_FROM_AGREE="http://minifacebookstock-service/friends/getFromAgree";
 
 //----------------------------------------------------------------------------------------------------------------
 @RequestMapping(value="/friends/add")

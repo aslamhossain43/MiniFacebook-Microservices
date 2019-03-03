@@ -23,7 +23,7 @@ public class UserFriendsController {
 	@Autowired
 	RestTemplate restTemplate;
 	//----------------------------------------------------------------------------------------------------------------
-	private static final String ADD_USER="http://friendStock-service/userFriends/add";
+	private static final String ADD_USER="http://minifacebookstock-service/userFriends/add";
 
 	
 

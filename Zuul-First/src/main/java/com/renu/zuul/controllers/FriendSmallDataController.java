@@ -26,8 +26,8 @@ public class FriendSmallDataController {
 	@Autowired
 	RestTemplate restTemplate;
 	// ---------------------------------------------------------------------------------------------------------
-	private static final String ADD_SMALL_DATA_FRIENDS = "http://friendStock-service/friends/smalldata/add";
-	private static final String GET_ALL_SMALL_DATA="http://friendStock-service/friends/smalldata/getAll";
+	private static final String ADD_SMALL_DATA_FRIENDS = "http://minifacebookstock-service/friends/smalldata/add";
+	private static final String GET_ALL_SMALL_DATA="http://minifacebookstock-service/friends/smalldata/getAll";
 
 	// ---------------------------------------------------------------------------------------------------------
 @RequestMapping(value="/friends/smalldata/add")

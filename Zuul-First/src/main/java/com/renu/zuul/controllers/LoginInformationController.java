@@ -22,7 +22,7 @@ public class LoginInformationController {
 	@Autowired
 	RestTemplate restTemplate;
 	// -------------------------------------------------------------------------------------------------------
-	private static final String ADD_LOGIN_INFORMATION = "http://profileStock-service/login/add/information";
+	private static final String ADD_LOGIN_INFORMATION = "http://minifacebookstock-service/login/add/information";
 
 	// ------------------------------------------------------------------------------------------------------------
 	@RequestMapping(value = "/add/information")
