@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.renu.zuul.config.RibbonConfiguration;
 import com.renu.zuul.models.BasicInformation;
 import com.renu.zuul.models.College;
 import com.renu.zuul.models.ContactInformation;
@@ -30,6 +32,7 @@ import com.renu.zuul.models.Workplace;
 
 @RestController
 @RequestMapping(value = "/zuul-profileAbout")
+@RibbonClient(name = "minifacebook-service", configuration = RibbonConfiguration.class)
 public class ProfileAboutRouteController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProfileAboutRouteController.class);
 	// REST TEMPLATE
@@ -37,118 +40,118 @@ public class ProfileAboutRouteController {
 	RestTemplate restTemplate;
 	// -----------------------------------------------------------------------------------------------------------------
 	// WORKPLACE URL
-	private static final String WORKPLACE_ADD_URL = "http://aboutStock-service/aboutStock-post/workplace/add";
-	private static final String GET_ALL_WORKPLACES_URL = "http://aboutStock-service/aboutStock-get/workplace/getAll/";
-	private static final String GET_SINGLE_WORKPLACE_URL = "http://aboutStock-service/aboutStock-get/workplace/single/";
-	private static final String UPDATE_SINGLE_WORKPLACE_URL = "http://aboutStock-service/aboutStock-update/workplace/update/";
-	private static final String DELETE_SINGLE_WORKPLACE_URL = "http://aboutStock-service/aboutStock-delete/workplace/single/delete/";
+	private static final String WORKPLACE_ADD_URL = "http://minifacebookstock-service/aboutStock-post/workplace/add";
+	private static final String GET_ALL_WORKPLACES_URL = "http://minifacebookstock-service/aboutStock-get/workplace/getAll/";
+	private static final String GET_SINGLE_WORKPLACE_URL = "http://minifacebookstock-service/aboutStock-get/workplace/single/";
+	private static final String UPDATE_SINGLE_WORKPLACE_URL = "http://minifacebookstock-service/aboutStock-update/workplace/update/";
+	private static final String DELETE_SINGLE_WORKPLACE_URL = "http://minifacebookstock-service/aboutStock-delete/workplace/single/delete/";
 
 	// -----------------------------------------------------------------------------------------------------------------------
 	// PROFESSIONAL SKILLS URL
-	private static final String PROFESSIONAL_SKILLS_ADD_URL = "http://aboutStock-service/aboutStock-post/professionalSkills/add";
-	private static final String GET_ALL_PROFESSIONAL_SKILLS_URL = "http://aboutStock-service/aboutStock-get/professionalSkills/getAll/";
-	private static final String GET_SINGLE_PROFESSIONAL_SKILLS_URL = "http://aboutStock-service/aboutStock-get/professionalSkills/single/";
-	private static final String UPDATE_SINGLE_PROFESSIONAL_SKILLS_URL = "http://aboutStock-service/aboutStock-update/professionalSkills/update/";
-	private static final String DELETE_SINGLE_PROFESSIONAL_SKILLS_URL = "http://aboutStock-service/aboutStock-delete/professionalSkills/single/delete/";
+	private static final String PROFESSIONAL_SKILLS_ADD_URL = "http://minifacebookstock-service/aboutStock-post/professionalSkills/add";
+	private static final String GET_ALL_PROFESSIONAL_SKILLS_URL = "http://minifacebookstock-service/aboutStock-get/professionalSkills/getAll/";
+	private static final String GET_SINGLE_PROFESSIONAL_SKILLS_URL = "http://minifacebookstock-service/aboutStock-get/professionalSkills/single/";
+	private static final String UPDATE_SINGLE_PROFESSIONAL_SKILLS_URL = "http://minifacebookstock-service/aboutStock-update/professionalSkills/update/";
+	private static final String DELETE_SINGLE_PROFESSIONAL_SKILLS_URL = "http://minifacebookstock-service/aboutStock-delete/professionalSkills/single/delete/";
 	// --------------------------------------------------------------------------------------------------------------------
 	// COLLEGE URL
-	private static final String COLLEGE_ADD_URL = "http://aboutStock-service/aboutStock-post/college/add";
-	private static final String GET_ALL_COLLEGE_URL = "http://aboutStock-service/aboutStock-get/college/getAll/";
-	private static final String GET_SINGLE_COLLEGE_URL = "http://aboutStock-service/aboutStock-get/college/single/";
-	private static final String UPDATE_SINGLE_COLLEGE_URL = "http://aboutStock-service/aboutStock-update/college/update/";
-	private static final String DELETE_SINGLE_COLLEGE_URL = "http://aboutStock-service/aboutStock-delete/college/single/delete/";
+	private static final String COLLEGE_ADD_URL = "http://minifacebookstock-service/aboutStock-post/college/add";
+	private static final String GET_ALL_COLLEGE_URL = "http://minifacebookstock-service/aboutStock-get/college/getAll/";
+	private static final String GET_SINGLE_COLLEGE_URL = "http://minifacebookstock-service/aboutStock-get/college/single/";
+	private static final String UPDATE_SINGLE_COLLEGE_URL = "http://minifacebookstock-service/aboutStock-update/college/update/";
+	private static final String DELETE_SINGLE_COLLEGE_URL = "http://minifacebookstock-service/aboutStock-delete/college/single/delete/";
 
 	
 	// --------------------------------------------------------------------------------------------------------------------
 		// HIGH SCHOOL  URL
-		private static final String HIGHSCHOOL_ADD_URL = "http://aboutStock-service/aboutStock-post/highSchool/add";
-		private static final String GET_ALL_HIGHSCHOOL_URL = "http://aboutStock-service/aboutStock-get/highSchool/getAll/";
-		private static final String GET_SINGLE_HIGHSCHOOL_URL = "http://aboutStock-service/aboutStock-get/highSchool/single/";
-		private static final String UPDATE_SINGLE_HIGHSCHOOL_URL = "http://aboutStock-service/aboutStock-update/highSchool/update/";
-		private static final String DELETE_SINGLE_HIGHSCHOOL_URL = "http://aboutStock-service/aboutStock-delete/highSchool/single/delete/";
+		private static final String HIGHSCHOOL_ADD_URL = "http://minifacebookstock-service/aboutStock-post/highSchool/add";
+		private static final String GET_ALL_HIGHSCHOOL_URL = "http://minifacebookstock-service/aboutStock-get/highSchool/getAll/";
+		private static final String GET_SINGLE_HIGHSCHOOL_URL = "http://minifacebookstock-service/aboutStock-get/highSchool/single/";
+		private static final String UPDATE_SINGLE_HIGHSCHOOL_URL = "http://minifacebookstock-service/aboutStock-update/highSchool/update/";
+		private static final String DELETE_SINGLE_HIGHSCHOOL_URL = "http://minifacebookstock-service/aboutStock-delete/highSchool/single/delete/";
 
 		// --------------------------------------------------------------------------------------------------------------------
 		// CURRENT CITY  URL
-		private static final String CURRENT_CITY_ADD_URL = "http://aboutStock-service/aboutStock-post/currentCity/add";
-		private static final String GET_ALL_CURRENT_CITY_URL = "http://aboutStock-service/aboutStock-get/currentCity/getAll/";
-		private static final String GET_SINGLE_CURRENT_CITY_URL = "http://aboutStock-service/aboutStock-get/currentCity/single/";
+		private static final String CURRENT_CITY_ADD_URL = "http://minifacebookstock-service/aboutStock-post/currentCity/add";
+		private static final String GET_ALL_CURRENT_CITY_URL = "http://minifacebookstock-service/aboutStock-get/currentCity/getAll/";
+		private static final String GET_SINGLE_CURRENT_CITY_URL = "http://minifacebookstock-service/aboutStock-get/currentCity/single/";
 		
-		private static final String UPDATE_SINGLE_CURRENT_CITY_URL = "http://aboutStock-service/aboutStock-update/currentCity/update/";
+		private static final String UPDATE_SINGLE_CURRENT_CITY_URL = "http://minifacebookstock-service/aboutStock-update/currentCity/update/";
 		
-		private static final String DELETE_SINGLE_CURRENT_CITY_URL = "http://aboutStock-service/aboutStock-delete/currentCity/single/delete/";
+		private static final String DELETE_SINGLE_CURRENT_CITY_URL = "http://minifacebookstock-service/aboutStock-delete/currentCity/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
 		// HOME TOWN  URL
-		private static final String HOMETOWN_ADD_URL = "http://aboutStock-service/aboutStock-post/homeTown/add";
-		private static final String GET_ALL_HOMETOWN_URL = "http://aboutStock-service/aboutStock-get/homeTown/getAll/";
-		private static final String GET_SINGLE_HOMETOWN_URL = "http://aboutStock-service/aboutStock-get/homeTown/single/";
+		private static final String HOMETOWN_ADD_URL = "http://minifacebookstock-service/aboutStock-post/homeTown/add";
+		private static final String GET_ALL_HOMETOWN_URL = "http://minifacebookstock-service/aboutStock-get/homeTown/getAll/";
+		private static final String GET_SINGLE_HOMETOWN_URL = "http://minifacebookstock-service/aboutStock-get/homeTown/single/";
 		
-		private static final String UPDATE_SINGLE_HOMETOWN_URL = "http://aboutStock-service/aboutStock-update/homeTown/update/";
+		private static final String UPDATE_SINGLE_HOMETOWN_URL = "http://minifacebookstock-service/aboutStock-update/homeTown/update/";
 		
-		private static final String DELETE_SINGLE_HOMETOWN_URL = "http://aboutStock-service/aboutStock-delete/homeTown/single/delete/";
+		private static final String DELETE_SINGLE_HOMETOWN_URL = "http://minifacebookstock-service/aboutStock-delete/homeTown/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
 		// OTHER PLACES LIVED  URL
-		private static final String OTHERPLACES_LIVED_ADD_URL = "http://aboutStock-service/aboutStock-post/otherPlacesLived/add";
-		private static final String GET_ALL_OTHERPLACES_LIVED_URL = "http://aboutStock-service/aboutStock-get/otherPlacesLived/getAll/";
-		private static final String GET_SINGLE_OTHERPLACES_LIVED_URL = "http://aboutStock-service/aboutStock-get/otherPlacesLived/single/";
+		private static final String OTHERPLACES_LIVED_ADD_URL = "http://minifacebookstock-service/aboutStock-post/otherPlacesLived/add";
+		private static final String GET_ALL_OTHERPLACES_LIVED_URL = "http://minifacebookstock-service/aboutStock-get/otherPlacesLived/getAll/";
+		private static final String GET_SINGLE_OTHERPLACES_LIVED_URL = "http://minifacebookstock-service/aboutStock-get/otherPlacesLived/single/";
 		
-		private static final String UPDATE_SINGLE_OTHERPLACES_LIVED_URL = "http://aboutStock-service/aboutStock-update/otherPlacesLived/update/";
+		private static final String UPDATE_SINGLE_OTHERPLACES_LIVED_URL = "http://minifacebookstock-service/aboutStock-update/otherPlacesLived/update/";
 		
-		private static final String DELETE_SINGLE_OTHERPLACES_LIVED_URL = "http://aboutStock-service/aboutStock-delete/otherPlacesLived/single/delete/";
+		private static final String DELETE_SINGLE_OTHERPLACES_LIVED_URL = "http://minifacebookstock-service/aboutStock-delete/otherPlacesLived/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
 		// CONTACT INFORMATION  URL
-		private static final String CONTACT_INFORMATION_ADD_URL = "http://aboutStock-service/aboutStock-post/contactInformation/add";
-		private static final String GET_ALL_CONTACT_INFORMATION_URL = "http://aboutStock-service/aboutStock-get/contactInformation/getAll/";
-		private static final String GET_SINGLE_CONTACT_INFORMATION_URL = "http://aboutStock-service/aboutStock-get/contactInformation/single/";
+		private static final String CONTACT_INFORMATION_ADD_URL = "http://minifacebookstock-service/aboutStock-post/contactInformation/add";
+		private static final String GET_ALL_CONTACT_INFORMATION_URL = "http://minifacebookstock-service/aboutStock-get/contactInformation/getAll/";
+		private static final String GET_SINGLE_CONTACT_INFORMATION_URL = "http://minifacebookstock-service/aboutStock-get/contactInformation/single/";
 		
-		private static final String UPDATE_SINGLE_CONTACT_INFORMATION_URL = "http://aboutStock-service/aboutStock-update/contactInformation/update/";
+		private static final String UPDATE_SINGLE_CONTACT_INFORMATION_URL = "http://minifacebookstock-service/aboutStock-update/contactInformation/update/";
 		
-		private static final String DELETE_SINGLE_CONTACT_INFORMATION_URL = "http://aboutStock-service/aboutStock-delete/contactInformation/single/delete/";
+		private static final String DELETE_SINGLE_CONTACT_INFORMATION_URL = "http://minifacebookstock-service/aboutStock-delete/contactInformation/single/delete/";
 	
 		// --------------------------------------------------------------------------------------------------------------------
 		// WEBSITE AND SOCIAL LINK  URL
-		private static final String WEBSITE_AND_SOCIAL_LINK_ADD_URL = "http://aboutStock-service/aboutStock-post/webSiteAndSocialLink/add";
-		private static final String GET_ALL_WEBSITE_AND_SOCIAL_LINK_URL = "http://aboutStock-service/aboutStock-get/webSiteAndSocialLink/getAll/";
-		private static final String GET_SINGLE_WEBSITE_AND_SOCIAL_LINK_URL = "http://aboutStock-service/aboutStock-get/webSiteAndSocialLink/single/";
+		private static final String WEBSITE_AND_SOCIAL_LINK_ADD_URL = "http://minifacebookstock-service/aboutStock-post/webSiteAndSocialLink/add";
+		private static final String GET_ALL_WEBSITE_AND_SOCIAL_LINK_URL = "http://minifacebookstock-service/aboutStock-get/webSiteAndSocialLink/getAll/";
+		private static final String GET_SINGLE_WEBSITE_AND_SOCIAL_LINK_URL = "http://minifacebookstock-service/aboutStock-get/webSiteAndSocialLink/single/";
 		
-		private static final String UPDATE_SINGLE_WEBSITE_AND_SOCIAL_LINK_URL = "http://aboutStock-service/aboutStock-update/webSiteAndSocialLink/update/";
+		private static final String UPDATE_SINGLE_WEBSITE_AND_SOCIAL_LINK_URL = "http://minifacebookstock-service/aboutStock-update/webSiteAndSocialLink/update/";
 		
-		private static final String DELETE_SINGLE_WEBSITE_AND_SOCIAL_LINK_URL = "http://aboutStock-service/aboutStock-delete/webSiteAndSocialLink/single/delete/";
+		private static final String DELETE_SINGLE_WEBSITE_AND_SOCIAL_LINK_URL = "http://minifacebookstock-service/aboutStock-delete/webSiteAndSocialLink/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
 		// BASIC INFORMATION  URL
-		private static final String BASIC_INFORMATION_ADD_URL = "http://aboutStock-service/aboutStock-post/basicInformation/add";
-		private static final String GET_ALL_BASIC_INFORMATION_URL = "http://aboutStock-service/aboutStock-get/basicInformation/getAll/";
-		private static final String GET_SINGLE_BASIC_INFORMATION_URL = "http://aboutStock-service/aboutStock-get/basicInformation/single/";
+		private static final String BASIC_INFORMATION_ADD_URL = "http://minifacebookstock-service/aboutStock-post/basicInformation/add";
+		private static final String GET_ALL_BASIC_INFORMATION_URL = "http://minifacebookstock-service/aboutStock-get/basicInformation/getAll/";
+		private static final String GET_SINGLE_BASIC_INFORMATION_URL = "http://minifacebookstock-service/aboutStock-get/basicInformation/single/";
 		
-		private static final String UPDATE_SINGLE_BASIC_INFORMATION_URL = "http://aboutStock-service/aboutStock-update/basicInformation/update/";
+		private static final String UPDATE_SINGLE_BASIC_INFORMATION_URL = "http://minifacebookstock-service/aboutStock-update/basicInformation/update/";
 		
-		private static final String DELETE_SINGLE_BASIC_INFORMATION_URL = "http://aboutStock-service/aboutStock-delete/basicInformation/single/delete/";
+		private static final String DELETE_SINGLE_BASIC_INFORMATION_URL = "http://minifacebookstock-service/aboutStock-delete/basicInformation/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
 		// RELATION SHIP  URL
-		private static final String RELATIONSHIP_ADD_URL = "http://aboutStock-service/aboutStock-post/relationShip/add";
-		private static final String GET_ALL_RELATIONSHIP_URL = "http://aboutStock-service/aboutStock-get/relationShip/getAll/";
-		private static final String GET_SINGLE_RELATIONSHIP_URL = "http://aboutStock-service/aboutStock-get/relationShip/single/";
+		private static final String RELATIONSHIP_ADD_URL = "http://minifacebookstock-service/aboutStock-post/relationShip/add";
+		private static final String GET_ALL_RELATIONSHIP_URL = "http://minifacebookstock-service/aboutStock-get/relationShip/getAll/";
+		private static final String GET_SINGLE_RELATIONSHIP_URL = "http://minifacebookstock-service/aboutStock-get/relationShip/single/";
 		
-		private static final String UPDATE_SINGLE_RELATIONSHIP_URL = "http://aboutStock-service/aboutStock-update/relationShip/update/";
+		private static final String UPDATE_SINGLE_RELATIONSHIP_URL = "http://minifacebookstock-service/aboutStock-update/relationShip/update/";
 		
-		private static final String DELETE_SINGLE_RELATIONSHIP_URL = "http://aboutStock-service/aboutStock-delete/relationShip/single/delete/";
+		private static final String DELETE_SINGLE_RELATIONSHIP_URL = "http://minifacebookstock-service/aboutStock-delete/relationShip/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
 		// FAMILY MEMBERS  URL
-		private static final String FAMILYMEMBERS_ADD_URL = "http://aboutStock-service/aboutStock-post/familyMembers/add";
-		private static final String GET_ALL_FAMILYMEMBERS_URL = "http://aboutStock-service/aboutStock-get/familyMembers/getAll/";
-		private static final String GET_SINGLE_FAMILYMEMBERS_URL = "http://aboutStock-service/aboutStock-get/familyMembers/single/";
+		private static final String FAMILYMEMBERS_ADD_URL = "http://minifacebookstock-service/aboutStock-post/familyMembers/add";
+		private static final String GET_ALL_FAMILYMEMBERS_URL = "http://minifacebookstock-service/aboutStock-get/familyMembers/getAll/";
+		private static final String GET_SINGLE_FAMILYMEMBERS_URL = "http://minifacebookstock-service/aboutStock-get/familyMembers/single/";
 		
-		private static final String UPDATE_SINGLE_FAMILYMEMBERS_URL = "http://aboutStock-service/aboutStock-update/familyMembers/update/";
+		private static final String UPDATE_SINGLE_FAMILYMEMBERS_URL = "http://minifacebookstock-service/aboutStock-update/familyMembers/update/";
 		
-		private static final String DELETE_SINGLE_FAMILYMEMBERS_URL = "http://aboutStock-service/aboutStock-delete/familyMembers/single/delete/";
+		private static final String DELETE_SINGLE_FAMILYMEMBERS_URL = "http://minifacebookstock-service/aboutStock-delete/familyMembers/single/delete/";
 		// --------------------------------------------------------------------------------------------------------------------
 		// FAVORITE QUOTES  URL
-		private static final String FAVORITEQUOTES_ADD_URL = "http://aboutStock-service/aboutStock-post/favoriteQuotes/add";
-		private static final String GET_ALL_FAVORITEQUOTES_URL = "http://aboutStock-service/aboutStock-get/favoriteQuotes/getAll/";
-		private static final String GET_SINGLE_FAVORITEQUOTES_URL = "http://aboutStock-service/aboutStock-get/favoriteQuotes/single/";
+		private static final String FAVORITEQUOTES_ADD_URL = "http://minifacebookstock-service/aboutStock-post/favoriteQuotes/add";
+		private static final String GET_ALL_FAVORITEQUOTES_URL = "http://minifacebookstock-service/aboutStock-get/favoriteQuotes/getAll/";
+		private static final String GET_SINGLE_FAVORITEQUOTES_URL = "http://minifacebookstock-service/aboutStock-get/favoriteQuotes/single/";
 		
-		private static final String UPDATE_SINGLE_FAVORITEQUOTES_URL = "http://aboutStock-service/aboutStock-update/favoriteQuotes/update/";
+		private static final String UPDATE_SINGLE_FAVORITEQUOTES_URL = "http://minifacebookstock-service/aboutStock-update/favoriteQuotes/update/";
 		
-		private static final String DELETE_SINGLE_FAVORITEQUOTES_URL = "http://aboutStock-service/aboutStock-delete/favoriteQuotes/single/delete/";
+		private static final String DELETE_SINGLE_FAVORITEQUOTES_URL = "http://minifacebookstock-service/aboutStock-delete/favoriteQuotes/single/delete/";
 	
 	// --------------------------------------------------------------------------------------------------------------------
 	// START WRKPLACE METHOD
